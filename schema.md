@@ -6,7 +6,7 @@
 erDiagram
     %% Core Entities (Ordered for cleaner layout)
     roles ||--o{ users : "has"
-    items }|--o{ items_lost : "has lost record"
+    items ||--o{ items_lost : "has lost record"
     payments ||--o{ id_replacements : "funds"
 
     %% User & Related
