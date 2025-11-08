@@ -56,67 +56,12 @@
             <p>Users</p>
           </a>
         </li>
-
-        {{-- Administration Section --}}
-        <li class="nav-header">Practitioner Management</li>
-
-        {{-- Practitioners --}}
-        <li class="nav-item">
-          <a href="{{ route('practitioners.index') }}" class="nav-link {{ request()->is('practitioners*') ? 'active' : ""; }}">
-            <i class="nav-icon bi bi-person-check"></i>
-            <p>Practitioners</p>
-          </a>
-        </li>
-
-        {{-- Administration Section --}}
-        <li class="nav-header">Administration</li>
-
-        {{-- Statuses --}}
-        <li class="nav-item">
-          <a href="{{ route('statuses.index') }}" class="nav-link {{ request()->is('statuses*') ? 'active' : ""; }}">
-            <i class="nav-icon bi bi-info-circle"></i>
-            <p>Statuses</p>
-          </a>
-        </li>
-
-        {{-- Specialities --}}
-        <li class="nav-item">
-          <a href="{{ route('specialities.index') }}" class="nav-link {{ request()->is('specialities*') ? 'active' : ""; }}">
-            <i class="nav-icon bi bi-star"></i>
-            <p>Specialities</p>
-          </a>
-        </li>
-
-        {{-- Sub Specialities --}}
-        <li class="nav-item">
-          <a href="{{ route('subspecialities.index') }}" class="nav-link {{ request()->is('subspecialities*') ? 'active' : ""; }}">
-            <i class="nav-icon bi bi-star-half"></i>
-            <p>Sub Specialities</p>
-          </a>
-        </li>
-
-        {{-- Institutions --}}
-        <li class="nav-item">
-          <a href="{{ route('instituitions.index') }}" class="nav-link {{ request()->is('instituitions*') ? 'active' : ""; }}">
-            <i class="nav-icon bi bi-building"></i>
-            <p>Instituitions</p>
-          </a>
-        </li>
-
-        {{-- Degrees --}}
-        <li class="nav-item">
-          <a href="{{ route('degrees.index') }}" class="nav-link {{ request()->is('degrees*') ? 'active' : ""; }}">
-            <i class="nav-icon bi bi-mortarboard"></i>
-            <p>Degrees</p>
-          </a>
-        </li>
-
         
         
         {{-- Settings --}}
         <li class="nav-header">Settings</li>
         <li class="nav-item">
-          <a href="{{ route('settings.index') }}" class="nav-link {{ request()->is('settings*') ? 'active' : "" }}">
+          <a href="{{ url::to('/') }}" class="nav-link {{ request()->is('settings*') ? 'active' : "" }}">
             <i class="nav-icon bi bi-gear"></i>
             <p>System Settings</p>
           </a>
