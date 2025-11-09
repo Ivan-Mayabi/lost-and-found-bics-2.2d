@@ -63,32 +63,36 @@
                 <td>{{ date("M d, Y", strtotime($user->created_at))}}</td>
                 <td>
                   <div class="btn-group" role="group">
-                    
                     <a href="{{ route('users.edit',$user->id)}}" 
-                       class="btn btn-warning btn-sm" 
+                       class="btn btn-warning btn-sm rounded-start" 
                        title="Edit">
-                      <i class="bi bi-pencil rounded-0"></i>
+                      <i class="bi bi-pencil"></i>
                     </a>
-                    {{-- <form action="{{ route('users.reset-password',$user->id) }}" 
+                    <form action="{{ route('users.reset-password',$user->id) }}" 
                             method="POST" 
                             class="d-inline"
                             onsubmit="return confirm('Are you sure you want to reset this password?');">
                         @csrf
-                        <button type="submit" class="btn btn-secondary rounded-0 btn-sm" title="Reset Password">
-                          <i class="bi bi-key"></i>
-                        </button>
-                      </form> --}}
-
-                      <form action="{{ route('users.destroy',$user->id) }}" 
-                            method="POST" 
-                            class="d-inline"
-                            onsubmit="return confirm('Are you sure you want to delete this user?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger rounded-0 btn-sm" title="Delete">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </form>
+                      <button type="submit" class="btn btn-success rounded-0 btn-sm" title="Reset Password">
+                        <i class="bi bi-key"></i>
+                      </button>
+                    </form>
+                    <form action="{{ route('users.destroy',$user->id) }}" 
+                          method="POST" 
+                          class="d-inline"
+                          onsubmit="return confirm('Are you sure you want to delete this user?');">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="btn btn-danger rounded-0 btn-sm" title="Delete">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </form>
+                    <form action="{{ route('users.deactivate',$user->id) }}" method=POST onsubmit="return confirm('Do you want to deactivate this user?')" class="d-inline">
+                      @csrf
+                      <button type="submit" title="Deactivate User" class="btn btn-info rounded-end btn-sm">
+                          <i class="bi bi-ban"></i>
+                      </button>
+                    </form>
                   </div>
                 </td>
               </tr>

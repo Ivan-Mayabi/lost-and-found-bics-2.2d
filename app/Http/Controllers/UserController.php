@@ -87,4 +87,20 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('error','Cannot delete Users who have items claimed');
         }
     }
+    /**
+     * Update the user password
+     */
+    public function reset_password(User $user){
+        $user->password = Hash::make(env('DEFAULT_PASSWORD','password'));
+        $user->save();
+        return redirect()->route('users.index')->with('success','Password Reset Successfully');
+    }
+    /**
+     * Make a user inactive
+     */
+    public function deactivate(User $user){
+        $user->active = 0;
+        $user->save();
+        return redirect()->route('users.index')->with('success','User Deactivated Successfully. They cannot log in.');
+    }
 }
