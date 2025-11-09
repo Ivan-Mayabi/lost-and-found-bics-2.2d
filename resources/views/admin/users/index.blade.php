@@ -28,7 +28,7 @@
       <!-- /.card-header -->
       
       <div class="card-body">
-          <table class="table table-bordered table-striped">
+          <table class="table table-bordered table-striped" style="border-collapse:collapse">
             <thead>
               <tr>
                 <th style="width: 10px">#</th>
@@ -57,9 +57,13 @@
                         </span>
                         @endif
                 </td>
-                @if(!is_null($user->role))
-                    <td>{{$user->role->type}}</td>
+                <td>{{$user->role->type}}</td>
+                @if($user->active==1)
+                  <td class="bg-success">Active</td>
+                @else
+                  <td class="bg-danger">Inactive</td>
                 @endif
+                </td>
                 <td>{{ date("M d, Y", strtotime($user->created_at))}}</td>
                 <td>
                   <div class="btn-group" role="group">
