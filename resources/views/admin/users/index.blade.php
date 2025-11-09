@@ -91,11 +91,17 @@
                         <i class="bi bi-trash"></i>
                       </button>
                     </form>
-                    <form action="{{ route('users.deactivate',$user->id) }}" method=POST onsubmit="return confirm('Do you want to deactivate this user?')" class="d-inline">
+                    <form action="{{ route('users.deactivate',$user->id) }}" method=POST onsubmit="return confirm('Do you want to deactivate/activate this user?')" class="d-inline">
                       @csrf
-                      <button type="submit" title="Deactivate User" class="btn btn-info rounded-end btn-sm">
-                          <i class="bi bi-ban"></i>
-                      </button>
+                          @if($user->active==1)
+                            <button type="submit" title="Deactivate User" class="btn btn-danger rounded-end btn-sm">
+                            <i class="bi bi-ban"></i>
+                            </button>
+                          @else
+                            <button type="submit" title="Activate User" class="btn btn-success rounded-end btn-sm">
+                            <i class="bi bi-check2-all"></i>
+                            </button>
+                          @endif
                     </form>
                   </div>
                 </td>

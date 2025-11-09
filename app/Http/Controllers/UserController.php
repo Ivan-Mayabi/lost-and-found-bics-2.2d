@@ -99,8 +99,13 @@ class UserController extends Controller
      * Make a user inactive
      */
     public function deactivate(User $user){
-        $user->active = 0;
+        if($user->active==1){
+            $user->active = 0;
+        }
+        else if($user->active==0){
+            $user->active = 1;
+        }
         $user->save();
-        return redirect()->route('users.index')->with('success','User Deactivated Successfully. They cannot log in.');
+        return redirect()->route('users.index')->with('success','User Status Changed Successfully.');
     }
 }
