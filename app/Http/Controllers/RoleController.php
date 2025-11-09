@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Role;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 class RoleController extends Controller
 {
@@ -13,7 +15,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $roles = Role::all();
+        return view('admin.roles.index',compact('roles'));
     }
 
     /**
@@ -21,7 +24,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.roles.create');
     }
 
     /**
@@ -29,7 +32,10 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        //
+        $role = new Role();
+        $role->type = $request->get('type');
+        $role->save();
+        return redirect()->route('roles.index')->with('success','Role Created Successfully');
     }
 
     /**
@@ -45,7 +51,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        return view('admin.roles.edit',compact('role'));
     }
 
     /**
@@ -53,7 +59,9 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
-        //
+        $role->type = $request->get('type');
+        $role->save();
+        return redirect()->route('roles.index')->with('success','Role Updated Successfully');
     }
 
     /**
@@ -61,6 +69,12 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        try{
+            $role->delete();
+            return redirect()->route('roles.index')->with('success','Role successfully deleted');
+        }catch(QueryException $e){
+            Log::error($e);
+            return redirect()->route('roles.index')->with('success','Role cannot be deleted if it has users');
+        }
     }
 }
