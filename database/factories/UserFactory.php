@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'user_image_url' => fake()->imageUrl(),
             'active' => random_int(0,1),
-            'role_id' => random_int(0,50)
+            'role_id' => random_int(1,4)
         ];
     }
 

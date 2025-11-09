@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -14,7 +17,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        return view('admin.users.index',compact('users'));
     }
 
     /**
@@ -22,7 +26,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::all();
+        return view('admin.users.create',compact('roles'));
     }
 
     /**
@@ -30,7 +35,13 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        $user = new User();
+        $user->name = $request->get('name');
+        $user->email= $request->get('email');
+        $user->role_id= $request->get('role');
+        $user->password = Hash::make('password');
+        $user->save();
+        return redirect()->route('users.index')->with('success','User Added Successfully');
     }
 
     /**
@@ -46,7 +57,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $roles = Role::all();
+        return view('admin.users.edit',compact('user','roles'));
     }
 
     /**
@@ -54,7 +66,12 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $user->name = $request->get('name');
+        $user->email= $request->get('email');
+        $user->role_id= $request->get('role');
+        $user->password = Hash::make('password');
+        $user->save();
+        return redirect()->route('users.index')->with('success','User Successfully Updated');
     }
 
     /**
@@ -62,6 +79,12 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        try{
+            $user->delete();
+            return redirect()->route('users.index')->with('success','User Deleted Successfully');
+        }catch(QueryException $e){
+            Log::error($e);
+            return redirect()->route('users.index')->with('error','Cannot delete Users who have items claimed');
+        }
     }
 }

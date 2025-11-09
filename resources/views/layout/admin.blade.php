@@ -64,10 +64,10 @@
     <div class="app-wrapper">
       
       {{-- Include Header --}}
-      @include('layout.admin.header')
+      @include('layout.partials.header')
       
       {{-- Include Sidebar --}}
-      @include('layout.admin.sidebar')
+      @include('layout.partials.sidebar')
       
       <!--begin::App Main-->
       <main class="app-main">
@@ -123,7 +123,7 @@
       <!--end::App Main-->
       
       {{-- Include Footer --}}
-      @include('layout.admin.footer')
+      @include('layout.partials.footer')
       
     </div>
     <!--end::App Wrapper-->
