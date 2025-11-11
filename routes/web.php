@@ -4,9 +4,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('admin.users.index');
-})->name('/');
+Route::get('/',[UserController::class,'index'])->name('/');
 
 // Setting up the routes that admins will use
 Route::resource('users',UserController::class);
