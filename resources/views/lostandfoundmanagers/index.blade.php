@@ -26,17 +26,31 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Type</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($items as $item)
-                            <tr>
-                                <td>{{ $item->id }}</td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->type }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
+    @foreach($items as $item)
+    <tr>
+        <td>{{ $item->id }}</td>
+        <td>{{ $item->name }}</td>
+        <td>{{ $item->type }}</td>
+        <td>
+            <a href="{{ route('lfm.items.edit', $item->id) }}" class="btn btn-sm btn-warning">
+                <i class="bi bi-pencil-square"></i> Edit
+            </a>
+
+            <form action="{{ route('lfm.items.delete', $item->id) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+            </form>
+        </td>
+    </tr>
+    @endforeach
+</tbody>
                     </table>
                     {{ $items->links('pagination::bootstrap-5') }}
                 @else
@@ -64,18 +78,32 @@
                                 <th>Item Name</th>
                                 <th>Date Lost</th>
                                 <th>Place Lost</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($lostItems as $lost)
-                            <tr>
-                                <td>{{ $lost->id }}</td>
-                                <td>{{ $lost->item->name ?? 'N/A' }}</td>
-                                <td>{{ $lost->date_lost }}</td>
-                                <td>{{ $lost->place_lost }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
+    @foreach($lostItems as $lost)
+    <tr>
+        <td>{{ $lost->id }}</td>
+        <td>{{ $lost->item->name ?? 'N/A' }}</td>
+        <td>{{ $lost->date_lost }}</td>
+        <td>{{ $lost->place_lost }}</td>
+        <td>
+            <a href="{{ route('lfm.lostitems.edit', $lost->id) }}" class="btn btn-sm btn-warning">
+                <i class="bi bi-pencil-square"></i> Edit
+            </a>
+
+            <form action="{{ route('lfm.lostitems.delete', $lost->id) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this lost item?')">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+            </form>
+        </td>
+    </tr>
+    @endforeach
+</tbody>
                     </table>
                     {{ $lostItems->links('pagination::bootstrap-5') }}
                 @else

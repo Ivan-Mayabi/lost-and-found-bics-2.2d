@@ -90,5 +90,80 @@ class LostAndFoundManagerController extends Controller
     return redirect()->back()->with('success', 'Claim rejected .');
 }
 
+// ================== ITEM EDIT/DELETE ==================
+
+// Show edit form for Item
+public function editItem($id)
+{
+    $item = Item::findOrFail($id);
+    return view('lostandfoundmanagers.edit_item', compact('item'));
+}
+
+// Update the Item
+public function updateItem(Request $request, $id)
+{
+    $item = Item::findOrFail($id);
+
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'type' => 'required|string|max:255',
+        'description' => 'required|string',
+    ]);
+
+    $item->update($request->only('name', 'type', 'description'));
+
+    return redirect()->route('lfm.dashboard')->with('success', 'Item updated successfully!');
+}
+
+// Delete Item
+public function deleteItem($id)
+{
+    $item = Item::findOrFail($id);
+    $item->delete();
+
+    return redirect()->route('lfm.dashboard')->with('success', 'Item deleted successfully!');
+}
+
+
+
+// ================== LOST ITEM EDIT/DELETE ==================
+
+// Show edit form for Lost Item
+public function editLostItem($id)
+{
+    $lostItem = ItemLost::findOrFail($id);
+    $items = Item::all(); // to repopulate dropdown
+    return view('lostandfoundmanagers.edit_lost_item', compact('lostItem', 'items'));
+}
+
+// Update Lost Item
+public function updateLostItem(Request $request, $id)
+{
+    $lostItem = ItemLost::findOrFail($id);
+
+    $request->validate([
+        'item_id' => 'required|exists:items,id',
+        'date_lost' => 'required|date',
+        'place_lost' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'image_url' => 'nullable|url'
+    ]);
+
+    $lostItem->update($request->only('item_id', 'date_lost', 'place_lost', 'description', 'image_url'));
+
+    return redirect()->route('lfm.dashboard')->with('success', 'Lost item updated successfully!');
+}
+
+// Delete Lost Item
+public function deleteLostItem($id)
+{
+    $lostItem = ItemLost::findOrFail($id);
+    $lostItem->delete();
+
+    return redirect()->route('lfm.dashboard')->with('success', 'Lost item deleted successfully!');
+}
+
+    
+
 }   
 
