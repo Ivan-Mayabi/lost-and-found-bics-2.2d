@@ -1,5 +1,5 @@
 
-@extends('layout.admin')
+@extends('layout.managers')
 
 @section('title', 'Add Item')
 

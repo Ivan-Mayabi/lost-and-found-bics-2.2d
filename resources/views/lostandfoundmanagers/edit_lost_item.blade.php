@@ -1,4 +1,4 @@
-@extends('layout.admin')
+@extends('layout.managers')
 
 @section('title', 'Edit Lost Item')
 
