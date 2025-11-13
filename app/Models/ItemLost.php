@@ -11,5 +11,17 @@ class ItemLost extends Model
     use HasFactory;
 
     // Change the table it references
-    protected $table = 'items_lost';
+
+    protected $table='items_lost';
+
+    protected $fillable=[
+        'item_id',
+        'date_lost',
+        'description',
+        'place_lost',
+        'image_url',
+        'taken',
+        'date_taken',
+        'user_taken_id'
+    ];
 }
