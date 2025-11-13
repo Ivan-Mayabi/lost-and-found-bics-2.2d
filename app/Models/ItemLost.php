@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ItemLost extends Model
 {
@@ -24,4 +26,17 @@ class ItemLost extends Model
         'date_taken',
         'user_taken_id'
     ];
+
+    // Relationship
+    // 1 item instance lost belongs to a certain item
+    public function item():BelongsTo
+    {
+        return $this->belongsTo(Item::class);
+    }
+
+    // 1 item instance lost has many claims
+    public function items_claimed():HasMany
+    {
+        return $this->hasMany(ItemClaimed::class);
+    }
 }
