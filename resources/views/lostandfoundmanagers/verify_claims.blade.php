@@ -27,7 +27,7 @@
                         @foreach($claims as $claim)
                         <tr>
                             <td>{{ $claim->id }}</td>
-                            <td>{{ $claim->item->name ?? 'N/A' }}</td>
+                            <td>{{ $claim->item_lost->item->name ?? 'N/A' }}</td>
                             <td>{{ $claim->user->name ?? 'N/A' }}</td>
                             <td>{{ $claim->created_at->format('Y-m-d') }}</td>
                             <td>
