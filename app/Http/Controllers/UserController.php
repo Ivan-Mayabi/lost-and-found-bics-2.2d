@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,12 +15,13 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(env('DEFAULT_PAGINATE_NUMBER',10));
         return view('admin.users.index',compact('users'));
     }
 
@@ -28,6 +30,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        // Authorise that it can be done
+        $this->authorize('create',User::class);
+
         $roles = Role::all();
         return view('admin.users.create',compact('roles'));
     }
@@ -37,6 +42,9 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        // Authorise that it can be done
+        $this->authorize('create',User::class);
+
         $user = new User();
         $user->name = $request->get('name');
         $user->email= $request->get('email');
@@ -59,6 +67,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        // Authorise that it can be done
+        $this->authorize('update',User::class);
+        
         $roles = Role::all();
         return view('admin.users.edit',compact('user','roles'));
     }
@@ -68,6 +79,9 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        // Authorise that it can be done
+        $this->authorize('update',User::class);
+
         $user->name = $request->get('name');
         $user->email= $request->get('email');
         $user->role_id= $request->get('role');
@@ -81,6 +95,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        // Authorise that it can be done
+        $this->authorize('delete',[Auth::user(),User::class]);
+
         try{
             $user->delete();
             return redirect()->route('users.index')->with('success','User Deleted Successfully');

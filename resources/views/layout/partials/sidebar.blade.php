@@ -38,26 +38,29 @@
           </a>
         </li>
         
-        {{-- User Management Section --}}
-        <li class="nav-header">User Management</li>
-        
-        {{-- Roles roles.html --}}
-        <li class="nav-item">
-          <a href="{{ route('roles.index') }}" class="nav-link {{ request()->is('role*') ? 'active' : ""; }}">
-            <i class="nav-icon bi bi-shield-lock"></i>
-            <p>Roles</p>
-          </a>
-        </li>
-        
-        {{-- Users --}}
-        <li class="nav-item">
-          <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('user*') ? 'active' : ""; }}">
-            <i class="nav-icon bi bi-people"></i>
-            <p>Users</p>
-          </a>
-        </li>
-        
+        @if(auth()->user()->isAdmin())
+          {{-- User Management Section --}}
+          <li class="nav-header">User Management</li>
+          
+          {{-- Roles roles.html --}}
+          <li class="nav-item">
+            <a href="{{ route('roles.index') }}" class="nav-link {{ request()->is('role*') ? 'active' : ""; }}">
+              <i class="nav-icon bi bi-shield-lock"></i>
+              <p>Roles</p>
+            </a>
+          </li>
+          
+          {{-- Users --}}
+          <li class="nav-item">
+            <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('user*') ? 'active' : ""; }}">
+              <i class="nav-icon bi bi-people"></i>
+              <p>Users</p>
+            </a>
+          </li>
+        @endif
+
         {{-- lost and found manager --}}
+        <li class="nav-header">Item Management</li>
         
         <li class="nav-item">
           <a href="{{ route('lfm.items.create') }}" class="nav-link {{ request()->is('lfm/items/create') ? 'active' : '' }}">
