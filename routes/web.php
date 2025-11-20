@@ -8,6 +8,16 @@ use PgSql\Lob;
 
 Route::get('/',[UserController::class,'index'])->name('/');
 
+// Setting up the routes to login
+Route::get('login',[UserController::class,'login'])->name('login');
+Route::post('authenticate',[UserController::class,'authenticate'])->name('authenticate');
+Route::post('logout',[UserController::class,'logout'])->name('logout');
+
+/* ========================================Closed routes=============================================== */
+Route::middleware('auth')->group(function(){
+    // All closed routes go here
+});
+
 // Setting up the routes that admins will use
 Route::resource('users',UserController::class);
 Route::resource('roles',RoleController::class);

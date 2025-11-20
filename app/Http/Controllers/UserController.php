@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -107,5 +109,47 @@ class UserController extends Controller
         }
         $user->save();
         return redirect()->route('users.index')->with('success','User Status Changed Successfully.');
+    }
+
+    /**
+     * Show the login page
+     */
+    public function login(){
+        // Return the logoin view
+        return view('auth.login');
+    }
+
+
+    /**
+     * Authenticate the user
+     */
+    public function authenticate(Request $request){
+        // Validate the email and the name
+        // Attempt the authentication
+        request()->validate([
+            'email'=>['required','email'],
+            'password' => ['required']
+        ]);
+
+        // Get the email and the password
+        $credentials = $request->only(['email','password']);
+
+        // Try to  and if it works go to the previous intended page
+        if(Auth::attempt($credentials)){
+            return redirect()->intended('/');
+        }
+        else{
+            return redirect()->route('login')->withErrors('general','Could not Log In, Wrong Username or Password');
+        }
+    }
+
+    /**
+     * Logout the user
+     */
+    public function logout(Request $request){
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('/');
     }
 }
