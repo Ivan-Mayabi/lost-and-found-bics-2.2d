@@ -11,7 +11,7 @@ class UpdateIdReplacementRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true; // Will be handled by policy
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateIdReplacementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id_lost' => ['sometimes', 'required', 'string', 'max:255'],
+            'payment_id' => ['sometimes', 'required', 'exists:payments,id'],
+            'approved' => ['sometimes', 'boolean']
         ];
     }
 }

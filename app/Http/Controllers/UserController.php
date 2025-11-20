@@ -87,6 +87,7 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('error','Cannot delete Users who have items claimed');
         }
     }
+    
     /**
      * Update the user password
      */
