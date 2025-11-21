@@ -11,6 +11,7 @@ class Claim extends Model
 {
     /** @use HasFactory<\Database\Factories\ClaimFactory> */
     use HasFactory;
+    protected $table='items_claimed';
 
     protected $fillable = [
         'user_id',
