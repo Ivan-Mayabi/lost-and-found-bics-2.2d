@@ -8,12 +8,14 @@ use App\Models\IdReplacement;
 use App\Models\Payment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class IdReplacementController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * API/JSON response (Ivan)
      */
     public function index()
     {
@@ -32,41 +34,86 @@ class IdReplacementController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show all temporary IDs for a logged-in student (Blade view)
      */
-    public function store(StoreIdReplacementRequest $request)
+    public function indexView()
     {
-        $this->authorize('create', IdReplacement::class);
-
-        // Verify payment
-        $payment = Payment::findOrFail($request->payment_id);
-
-        if ($payment->user_id !== Auth::id()) {
-            return response()->json([
-                'message' => 'Unauthorized payment'
-            ], Response::HTTP_FORBIDDEN);
-        }
-
-        $idReplacement = IdReplacement::create([
-            'user_id' => Auth::id(),
-            'payment_id' => $payment->id,
-            'id_lost' => $request->id_lost,
-            'approved' => false,
-        ]);
-
-        return response()->json([
-            'message' => 'ID replacement request submitted successfully',
-            'data' => $idReplacement->load('user', 'payment')
-        ], Response::HTTP_CREATED);
+        $idReplacements = IdReplacement::where('user_id', auth()->id())->latest()->get();
+        return view('user.temporary-ids.index', compact('idReplacements'));
     }
 
     /**
-     * Display the specified resource.
+     * Show form to create a new request (Blade view)
+     */
+    public function create()
+    {
+        return view('user.temporary-ids.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * Handles both API (Ivan) and Blade form submission
+     */
+    public function store(Request $request)
+    {
+        if ($request instanceof StoreIdReplacementRequest) {
+            // Ivan's API logic
+            $this->authorize('create', IdReplacement::class);
+
+            $payment = Payment::findOrFail($request->payment_id);
+
+            if ($payment->user_id !== Auth::id()) {
+                return response()->json([
+                    'message' => 'Unauthorized payment'
+                ], Response::HTTP_FORBIDDEN);
+            }
+
+            $idReplacement = IdReplacement::create([
+                'user_id' => Auth::id(),
+                'payment_id' => $payment->id,
+                'id_lost' => $request->id_lost,
+                'approved' => false,
+            ]);
+
+            return response()->json([
+                'message' => 'ID replacement request submitted successfully',
+                'data' => $idReplacement->load('user', 'payment')
+            ], Response::HTTP_CREATED);
+        } else {
+            // Blade form submission logic (your current code)
+            $request->validate([
+                'id_lost' => 'required|string|max:50',
+                'payment_id' => 'required|string|max:100',
+            ]);
+
+            IdReplacement::create([
+                'user_id' => auth()->id(),
+                'id_lost' => $request->id_lost,
+                'payment_id' => $request->payment_id,
+                'approved' => false,
+            ]);
+
+            return redirect()->route('user.temporary-ids.index')
+                             ->with('success', 'Temporary ID request submitted successfully.');
+        }
+    }
+
+    /**
+     * Display the specified resource (JSON/API)
      */
     public function show(IdReplacement $idReplacement)
     {
         $this->authorize('view', $idReplacement);
 
+        // Blade view for regular users
+        if (!Auth::user()->hasRole('admin')) {
+            if ($idReplacement->user_id !== auth()->id()) {
+                abort(403);
+            }
+            return view('user.temporary-ids.show', compact('idReplacement'));
+        }
+
+        // API response for admins
         return response()->json([
             'data' => $idReplacement->load(['user', 'payment'])
         ]);
@@ -79,10 +126,8 @@ class IdReplacementController extends Controller
     {
         $this->authorize('update', $idReplacement);
 
-        // Only allow updating certain fields if not an admin/approver
         $updateData = $request->only(['id_lost']);
 
-        // Only update payment if it's the same user and request is pending
         if ($request->has('payment_id') && $idReplacement->isPending()) {
             $payment = Payment::findOrFail($request->payment_id);
 
@@ -131,8 +176,6 @@ class IdReplacementController extends Controller
             'approved_by' => Auth::id(),
             'approved_at' => now(),
         ]);
-
-        // TODO: Trigger ID card generation or other post-approval actions
 
         return response()->json([
             'message' => 'ID replacement request approved successfully',
