@@ -39,4 +39,9 @@ class ItemLost extends Model
     {
         return $this->hasMany(ItemClaimed::class);
     }
+
+     public function claims()
+    {
+        return $this->hasMany(Claim::class, 'lost_item_id');
+    }
 }

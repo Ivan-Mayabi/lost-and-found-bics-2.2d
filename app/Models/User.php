@@ -53,9 +53,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    /**
-     * Check if admin
-     */
+    public function claims() 
+    {
+    return $this->hasMany(Claim::class);
+    }
+
     public function isAdmin()
     {
         return $this->role->type === "Admin";
@@ -72,5 +74,11 @@ class User extends Authenticatable
         return $this->hasMany(IdReplacement::class);
     }
 }
+
+    /**
+     * Check if admin
+     */
+    
+
 
 
