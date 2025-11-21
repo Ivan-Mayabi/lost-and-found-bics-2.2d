@@ -80,6 +80,26 @@
           </a>
         </li>
 
+        {{-- Regular User Section --}}
+<li class="nav-header">Regular Users</li>
+
+<li class="nav-item">
+  <a href="{{ route('user.temporary-ids.index') }}" 
+     class="nav-link {{ request()->is('user/temporary-ids*') ? 'active' : '' }}">
+    <i class="nav-icon bi bi-card-text"></i>
+    <p>Temporary IDs</p>
+  </a>
+</li>
+<li class="nav-item">
+  <a href="{{ route('user.lost-items.index') }}" 
+     class="nav-link {{ request()->is('user/lost-items*') ? 'active' : '' }}">
+    <i class="nav-icon bi bi-search"></i>
+    <p>Lost Items</p>
+  </a>
+</li>
+
+
+
         {{-- Settings --}}
         <li class="nav-header">Settings</li>
         <li class="nav-item">
