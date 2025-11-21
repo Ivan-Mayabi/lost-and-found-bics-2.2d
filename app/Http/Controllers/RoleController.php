@@ -6,10 +6,14 @@ use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Role;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class RoleController extends Controller
 {
+
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -24,6 +28,8 @@ class RoleController extends Controller
      */
     public function create()
     {
+        $this->authorize('create',Role::class);
+
         return view('admin.roles.create');
     }
 
@@ -32,6 +38,8 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
+        $this->authorize('create',Role::class);
+
         $role = new Role();
         $role->type = $request->get('type');
         $role->save();
@@ -51,6 +59,8 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        $this->authorize('update',Role::class);
+
         return view('admin.roles.edit',compact('role'));
     }
 
@@ -59,6 +69,8 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
+        $this->authorize('update',Role::class);
+
         $role->type = $request->get('type');
         $role->save();
         return redirect()->route('roles.index')->with('success','Role Updated Successfully');
@@ -69,6 +81,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        $this->authorize('delete',[Auth::user(),Role::class]);
+
         try{
             $role->delete();
             return redirect()->route('roles.index')->with('success','Role successfully deleted');

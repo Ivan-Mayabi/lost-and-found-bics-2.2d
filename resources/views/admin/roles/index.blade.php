@@ -35,7 +35,9 @@
                 <th>Type</th>
                 <th>Created At</th>
                 <th>Modified At</th>
-                <th style="width: 200px">Actions</th>
+                @if(auth()->user()->isAdmin())
+                  <th style="width: 100px">Actions</th>
+                @endif
               </tr>
             </thead>
             <tbody>
@@ -46,26 +48,32 @@
                 <td> {{$role->type}}</td>
                 <td>{{ date("M d, Y", strtotime($role->created_at))}}</td>
                 <td>{{ date("M d, Y",strtotime($role->updated_at))}}</td>
-                <td>
-                  <div class="btn-group" role="group">
-                        <a href="{{ route('roles.edit',$role->id)}}" 
-                        class="btn btn-warning btn-sm" 
-                        title="Edit">
-                        <i class="bi bi-pencil rounded-0"></i>
-                        </a>
-                       
-                        <form action="{{ route('roles.destroy',$role->id) }}" 
-                                method="POST" 
-                                class="d-inline"
-                                onsubmit="return confirm('Are you sure you want to delete this role?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger rounded-0 btn-sm" title="Delete">
-                            <i class="bi bi-trash"></i>
-                            </button>
-                        </form>
-                  </div>
-                </td>
+                @if(auth()->user()->isAdmin())
+                  <td>
+                    <div class="btn-group" role="group">
+                          @can('update',$role)
+                            <a href="{{ route('roles.edit',$role->id)}}" 
+                            class="btn btn-warning btn-sm" 
+                            title="Edit">
+                            <i class="bi bi-pencil rounded-0"></i>
+                            </a>
+                          @endcan
+                        
+                          @can('delete',$role)
+                            <form action="{{ route('roles.destroy',$role->id) }}" 
+                                    method="POST" 
+                                    class="d-inline"
+                                    onsubmit="return confirm('Are you sure you want to delete this role?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger rounded-0 btn-sm" title="Delete">
+                                <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                          @endcan
+                    </div>
+                  </td>
+                @endif
               </tr>
               @endforeach
             </tbody>

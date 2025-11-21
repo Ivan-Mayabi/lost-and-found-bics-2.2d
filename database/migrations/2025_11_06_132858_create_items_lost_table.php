@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('items_lost', function (Blueprint $table) {
             $table->id();
             $table->date('date_lost');
-            $table->string('description');
+            $table->string('description')->nullable()->default(null);
             $table->string('place_lost');
-            $table->string('image_url');
+            $table->string('image_url')->nullable()->default(null);
             $table->boolean('taken')->nullable()->default(0);
             $table->dateTime('date_taken')->nullable();
             $table->integer('user_taken_id')->nullable();

@@ -52,6 +52,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    /**
+     * Check if admin
+     */
+    public function isAdmin()
+    {
+        return $this->role->type === "Admin";
+    }
+
     
     public function itemsClaimed()
     {

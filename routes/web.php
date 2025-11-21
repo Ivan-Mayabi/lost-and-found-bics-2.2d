@@ -1,34 +1,49 @@
 <?php
 
-use App\Http\Controllers\IdReplacementController;
-use App\Http\Controllers\ItemClaimedController;
-use App\Http\Controllers\ItemController;
-use App\Http\Controllers\ItemLostController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',[UserController::class,'index'])->name('/');
 
-// Setting up the routes that admins will use
-Route::resource('users',UserController::class);
-Route::resource('roles',RoleController::class);
+// Setting up the routes to login
+Route::get('login',[UserController::class,'login'])->name('login');
+Route::post('authenticate',[UserController::class,'authenticate'])->name('authenticate');
+Route::post('logout',[UserController::class,'logout'])->name('logout');
+
+/* ========================================Closed routes=============================================== */
+Route::middleware('auth')->group(function(){
+    // All closed routes go here
+    // Setting up the routes that admins will use
+    Route::resource('users',UserController::class);
+    Route::resource('roles',RoleController::class);
 
 // Route for reseting password
 Route::post('users/{user}/reset-password',[UserController::class,'reset_password'])->name('users.reset-password');
 Route::post('users/{user}/deactivate',[UserController::class,'deactivate'])->name('users.deactivate');
 
-// Lost & Found Manager routes
-Route::resource('items', ItemController::class);
-Route::resource('items-lost', ItemLostController::class);
-Route::resource('items-claimed', ItemClaimedController::class);
-Route::post('items-lost/{itemLost}/mark-as-taken', [ItemLostController::class, 'markAsTaken'])->name('items-lost.mark-as-taken');
-Route::post('items-claimed/{itemClaimed}/verify', [ItemClaimedController::class, 'verify'])->name('items-claimed.verify');
+    // routes for lost and found manager
+    Route::prefix('lost-and-found-manager')->group(function () {
+        Route::get('/',[LostAndFoundManagerController::class,'index'])->name('lfm.dashboard');
+        Route::get('/items/create',[LostAndFoundManagerController::class,'createItem'])->name('lfm.items.create');
+        Route::post('/items/store',[LostAndFoundManagerController::class,'storeItem'])->name('lfm.items.store');
 
-// ID Replacement routes
-Route::resource('payments', PaymentController::class);
-Route::resource('id-replacements', IdReplacementController::class);
-Route::post('payments/{payment}/verify', [PaymentController::class, 'verify'])->name('payments.verify')->middleware('id.approver');
-Route::post('id-replacements/{idReplacement}/approve', [IdReplacementController::class, 'approve'])->name('id-replacements.approve')->middleware('id.approver');
-Route::post('id-replacements/{idReplacement}/reject', [IdReplacementController::class, 'reject'])->name('id-replacements.reject')->middleware('id.approver');
+        Route::get('lost-items/create',[LostAndFoundManagerController::class,'createLost'])->name('lfm.lost.create');
+        Route::post('lost-items/store',[LostAndFoundManagerController::class,'storeLost'])->name('lfm.lost.store');
+
+        Route::get('/claims',[LostAndFoundManagerController::class,'verifyClaims'])->name('lfm.claims.index');
+        Route::post('/claims/{id}/approve',[LostAndFoundManagerController::class,'approveClaim'])->name('lfm.claims.approve');
+
+        Route::delete('/claims/{id}/reject', [LostAndFoundManagerController::class, 'rejectClaim'])->name('lfm.claims.reject');
+
+        // Item Management
+        Route::get('/items/{id}/edit', [LostAndFoundManagerController::class, 'editItem'])->name('lfm.items.edit');
+        Route::put('/items/{id}', [LostAndFoundManagerController::class, 'updateItem'])->name('lfm.items.update');
+        Route::delete('/items/{id}', [LostAndFoundManagerController::class, 'deleteItem'])->name('lfm.items.delete');
+
+        // Lost Item Management
+        Route::get('/lost-items/{id}/edit', [LostAndFoundManagerController::class, 'editLostItem'])->name('lfm.lostitems.edit');
+        Route::put('/lost-items/{id}', [LostAndFoundManagerController::class, 'updateLostItem'])->name('lfm.lostitems.update');
+        Route::delete('/lost-items/{id}', [LostAndFoundManagerController::class, 'deleteLostItem'])->name('lfm.lostitems.delete');
+    });
+});
