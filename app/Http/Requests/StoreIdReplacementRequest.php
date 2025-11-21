@@ -11,7 +11,7 @@ class StoreIdReplacementRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true; // Will be handled by policy
     }
 
     /**
@@ -22,7 +22,8 @@ class StoreIdReplacementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id_lost' => ['required', 'string', 'max:255'],
+            'payment_id' => ['required', 'exists:payments,id']
         ];
     }
 }

@@ -61,4 +61,16 @@ class User extends Authenticatable
         return $this->role->type === "Admin";
     }
 
+    
+    public function itemsClaimed()
+    {
+        return $this->hasMany(ItemClaimed::class);
+    }
+    
+    public function idReplacements()
+    {
+        return $this->hasMany(IdReplacement::class);
+    }
 }
+
+

@@ -9,4 +9,13 @@ class Payment extends Model
 {
     /** @use HasFactory<\Database\Factories\PaymentFactory> */
     use HasFactory;
+    
+    public function idReplacements()
+    {
+        return $this->hasMany(IdReplacement::class);
+    }
 }
+
+
+
+
