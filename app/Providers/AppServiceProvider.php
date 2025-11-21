@@ -19,12 +19,13 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    protected $policies = [
-        IdReplacement::class => IdReplacementPolicy::class,
-    ];
-
+    // protected $policies = [
+    //     IdReplacement::class => IdReplacementPolicy::class,
+    // ];
+    
     public function boot(): void
     {
-        $this->registerPolicies();
+        //  $this->registerPolicies();
     }
+   
 }

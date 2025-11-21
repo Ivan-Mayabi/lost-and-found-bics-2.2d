@@ -14,9 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias([
-            'id.approver' => \App\Http\Middleware\IdReplacementApproverMiddleware::class,
-        ]);
+        // $middleware->alias([
+        //     'id.approver' => \App\Http\Middleware\IdReplacementApproverMiddleware::class,
+        // ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
