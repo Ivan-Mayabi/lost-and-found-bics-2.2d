@@ -13,7 +13,7 @@ class IdReplacementPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('admin') || $user->hasRole('id_approver');
+        return $user->isAdmin() || $user->isApprover();
     }
 
     /**
