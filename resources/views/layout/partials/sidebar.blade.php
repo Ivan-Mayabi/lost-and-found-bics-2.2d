@@ -37,8 +37,9 @@
             <p>Dashboard</p>
           </a>
         </li>
-        
-        @if(auth()->user()->isAdmin())
+
+        @if(auth()->check() && auth()->user()->isAdmin())
+
           {{-- User Management Section --}}
           <li class="nav-header">User Management</li>
           
@@ -51,6 +52,7 @@
           </li>
           
           {{-- Users --}}
+          
           <li class="nav-item">
             <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('user*') ? 'active' : ""; }}">
               <i class="nav-icon bi bi-people"></i>
@@ -60,6 +62,7 @@
         @endif
 
         {{-- lost and found manager --}}
+        @if (auth()->check())
         <li class="nav-header">Item Management</li>
         
         <li class="nav-item">
@@ -82,7 +85,7 @@
             <p>Verify Claims</p>
           </a>
         </li>
-
+  @endif
         {{-- Settings --}}
         <li class="nav-header">Settings</li>
         <li class="nav-item">
