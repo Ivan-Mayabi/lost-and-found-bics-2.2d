@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Database\Factories\ItemFactory;
 
 class Item extends Model
 {
@@ -12,6 +13,6 @@ class Item extends Model
     
     public function itemsLost()
     {
-        return $this->hasMany(ItemLost::class);
+        return $this->hasMany(ItemLost::class, 'item_id');
     }
 }
