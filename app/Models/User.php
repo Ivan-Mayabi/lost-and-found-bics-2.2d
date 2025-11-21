@@ -53,12 +53,19 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    /**
-     * Check if admin
-     */
+    public function claims() 
+    {
+    return $this->hasMany(Claim::class);
+    }
+
     public function isAdmin()
     {
         return $this->role->type === "Admin";
+    }
+
+    public function isStudent()
+    {
+        return $this->role->type === "Regular User";
     }
 
     
@@ -75,6 +82,14 @@ class User extends Authenticatable
     public function isApprover(){
         return $this->role->type === 'ID Replacement Approver';
     }
+    public function isManager()
+{
+    return $this->role->type === 'Manager';
 }
+
+}
+
+    
+
 
 

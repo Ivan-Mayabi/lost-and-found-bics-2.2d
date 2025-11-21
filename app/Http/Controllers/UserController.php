@@ -155,7 +155,7 @@ class UserController extends Controller
 
         // Try to  and if it works go to the previous intended page
         if(Auth::attempt($credentials)){
-            return redirect()->intended('/');
+            return redirect()->intended('/users');
         }
         else{
             return redirect()->route('login')->withErrors('general','Could not Log In, Wrong Username or Password');
