@@ -32,7 +32,6 @@ class DatabaseSeeder extends Seeder
             IdReplacementSeeder::class
         ]);
         User::factory(50)->create();
-        Item::factory(50)->create();
         ItemLost::factory(50)->create();
         ItemLost::factory(25)->taken()->create();
         ItemClaimed::factory(75)->create();

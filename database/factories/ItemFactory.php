@@ -17,9 +17,7 @@ class ItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->realText(10),
-            'type'=> fake()->realText(10),
-            'description' => fake()->realText(10)
+            //
         ];
     }
 }
