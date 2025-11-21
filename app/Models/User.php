@@ -52,4 +52,36 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function claims() 
+    {
+    return $this->hasMany(Claim::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role->type === "Admin";
+    }
+
+    
+    public function itemsClaimed()
+    {
+        return $this->hasMany(ItemClaimed::class);
+    }
+    
+    public function idReplacements()
+    {
+        return $this->hasMany(IdReplacement::class);
+    }
+
+    public function isManager()
+{
+    return $this->role->type === 'Manager';
 }
+
+}
+
+    
+
+
+

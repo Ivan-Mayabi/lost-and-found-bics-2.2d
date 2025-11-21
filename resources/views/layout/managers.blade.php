@@ -67,7 +67,7 @@
       @include('layout.partials.header')
       
       {{-- Include Sidebar --}}
-      @include('layout.partials.sidebar_managers')
+      @include('layout.partials.sidebar')
 
       <!--begin::App Main-->
       <main class="app-main">

@@ -61,6 +61,19 @@ class PaymentController extends Controller
      */
     public function destroy(Payment $payment)
     {
-        //
+        $payment->delete();
+        return redirect()->route('payments.index')
+            ->with('success', 'Payment deleted successfully');
+    }
+
+    /**
+     * Verify payment
+     */
+    public function verify(Payment $payment)
+    {
+        $payment->update(['verified' => true]);
+
+        return redirect()->route('payments.index')
+            ->with('success', 'Payment verified successfully');
     }
 }

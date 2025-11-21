@@ -4,6 +4,7 @@ use App\Http\Controllers\LostAndFoundManagerController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemLostController;
+use App\Http\Controllers\ClaimController;
 use Illuminate\Support\Facades\Route;
 
 // --------------------
@@ -32,7 +33,6 @@ Route::middleware('auth')->group(function () {
 
     // --------------------
     // Lost & Found Manager Routes
-    // Prefix: /lost-and-found-manager
     // --------------------
     Route::prefix('lost-and-found-manager')->group(function () {
 
@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/lost-items/{id}', [LostAndFoundManagerController::class, 'updateLostItem'])->name('lfm.lostitems.update');
         Route::delete('/lost-items/{id}', [LostAndFoundManagerController::class, 'deleteLostItem'])->name('lfm.lostitems.delete');
 
-        // Claims
+        // Claims for Lost & Found Manager
         Route::get('/claims', [LostAndFoundManagerController::class, 'verifyClaims'])->name('lfm.claims.index');
         Route::post('/claims/{id}/approve', [LostAndFoundManagerController::class, 'approveClaim'])->name('lfm.claims.approve');
         Route::delete('/claims/{id}/reject', [LostAndFoundManagerController::class, 'rejectClaim'])->name('lfm.claims.reject');
@@ -60,7 +60,6 @@ Route::middleware('auth')->group(function () {
 
     // --------------------
     // Student / Regular User Routes
-    // Prefix: /user
     // --------------------
     Route::prefix('user')->group(function () {
 
@@ -70,22 +69,20 @@ Route::middleware('auth')->group(function () {
         Route::post('/lost-items', [ItemLostController::class, 'store'])->name('user.lost-items.store');
         Route::get('/lost-items/{itemLost}', [ItemLostController::class, 'show'])->name('user.lost-items.show');
 
-        // Claims (temporary placeholder)
-        Route::get('/claims', function () {
-            return 'Claims page coming soon.';
-        })->name('user.claims.index');
-
-        Route::post('/claims', function () {
-            return 'Claim submission coming soon.';
-        })->name('user.claims.store');
+        // Claims (real implementation from ClaimController)
+        Route::get('/claims', [ClaimController::class, 'index'])->name('user.claims.index');
+        Route::get('/claims/create/{lostItemId}', [ClaimController::class, 'create'])->name('user.claims.create');
+        Route::post('/claims', [ClaimController::class, 'store'])->name('user.claims.store');
+        Route::get('/claims/history', [ClaimController::class, 'history'])->name('user.claims.history');
 
         // Temporary IDs
         Route::prefix('temporary-ids')->group(function () {
-            Route::get('/', [\App\Http\Controllers\IdReplacementController::class, 'index'])->name('user.temporary-ids.index');
+            Route::get('/', [\App\Http\Controllers\IdReplacementController::class, 'indexView'])->name('user.temporary-ids.index');
             Route::get('/create', [\App\Http\Controllers\IdReplacementController::class, 'create'])->name('user.temporary-ids.create');
             Route::post('/', [\App\Http\Controllers\IdReplacementController::class, 'store'])->name('user.temporary-ids.store');
             Route::get('/{idReplacement}', [\App\Http\Controllers\IdReplacementController::class, 'show'])->name('user.temporary-ids.show');
         });
+
     });
 
 });

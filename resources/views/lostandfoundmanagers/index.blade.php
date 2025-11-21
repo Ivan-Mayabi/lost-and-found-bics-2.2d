@@ -75,6 +75,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Item Image</th>
                                 <th>Item Name</th>
                                 <th>Date Lost</th>
                                 <th>Place Lost</th>
@@ -85,6 +86,9 @@
     @foreach($lostItems as $lost)
     <tr>
         <td>{{ $lost->id }}</td>
+        <td>
+            <img src="{{ asset('storage/'.$lost->image_url)}}" alt="Lost Image" width="100vh">
+        </td>
         <td>{{ $lost->item->name ?? 'N/A' }}</td>
         <td>{{ $lost->date_lost }}</td>
         <td>{{ $lost->place_lost }}</td>

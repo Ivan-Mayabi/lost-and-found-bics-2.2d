@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreItemClaimedRequest;
 use App\Http\Requests\UpdateItemClaimedRequest;
 use App\Models\ItemClaimed;
+use App\Models\ItemLost;
+use App\Models\User;
 
 class ItemClaimedController extends Controller
 {
@@ -13,7 +15,8 @@ class ItemClaimedController extends Controller
      */
     public function index()
     {
-        //
+        $itemsClaimed = ItemClaimed::with(['user', 'itemLost.item'])->get();
+        return view('lost-found.items-claimed.index', compact('itemsClaimed'));
     }
 
     /**
@@ -21,7 +24,9 @@ class ItemClaimedController extends Controller
      */
     public function create()
     {
-        //
+        $itemsLost = ItemLost::where('taken', false)->get();
+        $users = User::all();
+        return view('lost-found.items-claimed.create', compact('itemsLost', 'users'));
     }
 
     /**
@@ -29,7 +34,14 @@ class ItemClaimedController extends Controller
      */
     public function store(StoreItemClaimedRequest $request)
     {
-        //
+        ItemClaimed::create([
+            'user_id' => $request->user_id,
+            'item_lost_id' => $request->item_lost_id,
+            'verified' => false,
+        ]);
+        
+        return redirect()->route('items-claimed.index')
+            ->with('success', 'Item claim recorded successfully');
     }
 
     /**
@@ -37,7 +49,8 @@ class ItemClaimedController extends Controller
      */
     public function show(ItemClaimed $itemClaimed)
     {
-        //
+        $itemClaimed->load(['user', 'itemLost.item']);
+        return view('lost-found.items-claimed.show', compact('itemClaimed'));
     }
 
     /**
@@ -45,7 +58,9 @@ class ItemClaimedController extends Controller
      */
     public function edit(ItemClaimed $itemClaimed)
     {
-        //
+        $itemsLost = ItemLost::where('taken', false)->get();
+        $users = User::all();
+        return view('lost-found.items-claimed.edit', compact('itemClaimed', 'itemsLost', 'users'));
     }
 
     /**
@@ -53,7 +68,13 @@ class ItemClaimedController extends Controller
      */
     public function update(UpdateItemClaimedRequest $request, ItemClaimed $itemClaimed)
     {
-        //
+        $itemClaimed->update([
+            'user_id' => $request->user_id,
+            'item_lost_id' => $request->item_lost_id,
+        ]);
+        
+        return redirect()->route('items-claimed.index')
+            ->with('success', 'Item claim updated successfully');
     }
 
     /**
@@ -61,6 +82,25 @@ class ItemClaimedController extends Controller
      */
     public function destroy(ItemClaimed $itemClaimed)
     {
-        //
+        $itemClaimed->delete();
+        return redirect()->route('items-claimed.index')
+            ->with('success', 'Item claim deleted successfully');
+    }
+    
+    /**
+     * Verify item claim
+     */
+    public function verify(ItemClaimed $itemClaimed)
+    {
+        $itemClaimed->update(['verified' => true]);
+        
+        // Mark the lost item as taken
+        $itemClaimed->itemLost->update([
+            'taken' => true,
+            'user_taken_id' => $itemClaimed->user_id,
+        ]);
+        
+        return redirect()->route('items-claimed.index')
+            ->with('success', 'Item claim verified successfully');
     }
 }

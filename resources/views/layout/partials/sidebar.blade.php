@@ -1,4 +1,4 @@
-<!--begin::Sidebar-->
+<!--begin::Sidebar--> 
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="light">
   <!--begin::Sidebar Brand-->
   <div class="sidebar-brand">
@@ -7,12 +7,12 @@
       <!--begin::Brand Image-->
       <img
         src="{{ asset('favicon.png') }}"
-        alt="{{env('APP_NAME')}} Logo"
+        alt="{{ env('APP_NAME') }} Logo"
         class="brand-image opacity-75 shadow"
       />
       <!--end::Brand Image-->
       <!--begin::Brand Text-->
-      <span style="font-size:48px;" class="brand-text fw-light waterfall-regular">{{env('APP_NAME')}}</span>
+      <span style="font-size:48px;" class="brand-text fw-light waterfall-regular">{{ env('APP_NAME') }}</span>
       <!--end::Brand Text-->
     </a>
     <!--end::Brand Link-->
@@ -32,73 +32,79 @@
       >
         {{-- Dashboard --}}
         <li class="nav-item">
-          <a href="{{ URL::to('/') }}" class="nav-link {{ request()->is('/') ? 'active' : ""; }}">
+          <a href="{{ URL::to('/') }}" class="nav-link {{ request()->is('/') ? 'active' : "" }}">
             <i class="nav-icon bi bi-speedometer"></i>
             <p>Dashboard</p>
           </a>
         </li>
-        
-        {{-- User Management Section --}}
-        <li class="nav-header">User Management</li>
-        
-        {{-- Roles roles.html --}}
-        <li class="nav-item">
-          <a href="{{ route('roles.index') }}" class="nav-link {{ request()->is('role*') ? 'active' : ""; }}">
-            <i class="nav-icon bi bi-shield-lock"></i>
-            <p>Roles</p>
-          </a>
-        </li>
-        
-        {{-- Users --}}
-        <li class="nav-item">
-          <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('user*') ? 'active' : ""; }}">
-            <i class="nav-icon bi bi-people"></i>
-            <p>Users</p>
-          </a>
-        </li>
-        
-        {{-- lost and found manager --}}
-        
-        <li class="nav-item">
-          <a href="{{ route('lfm.items.create') }}" class="nav-link {{ request()->is('lfm/items/create') ? 'active' : '' }}">
-            <i class="nav-icon bi bi-plus-circle"></i>
-            <p>Add Found Item</p>
-          </a>
-        </li>
 
-        <li class="nav-item">
-          <a href="{{ route('lfm.lost.create') }}" class="nav-link {{ request()->is('lfm/lost/create') ? 'active' : '' }}">
-            <i class="nav-icon bi bi-search"></i>
-            <p>Add Lost Item</p>
-          </a>
-        </li>
+        @if(auth()->check() && auth()->user()->isAdmin())
+          {{-- User Management Section --}}
+          <li class="nav-header">User Management</li>
 
-        <li class="nav-item">
-          <a href="{{ route('lfm.claims.index') }}" class="nav-link {{ request()->is('lfm/claims*') ? 'active' : '' }}">
-            <i class="nav-icon bi bi-check-circle"></i>
-            <p>Verify Claims</p>
-          </a>
-        </li>
+          {{-- Roles --}}
+          <li class="nav-item">
+            <a href="{{ route('roles.index') }}" class="nav-link {{ request()->is('role*') ? 'active' : "" }}">
+              <i class="nav-icon bi bi-shield-lock"></i>
+              <p>Roles</p>
+            </a>
+          </li>
 
-        {{-- Regular User Section --}}
-<li class="nav-header">Regular Users</li>
+          {{-- Users --}}
+          <li class="nav-item">
+            <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('user*') ? 'active' : "" }}">
+              <i class="nav-icon bi bi-people"></i>
+              <p>Users</p>
+            </a>
+          </li>
+        @endif
 
-<li class="nav-item">
-  <a href="{{ route('user.temporary-ids.index') }}" 
-     class="nav-link {{ request()->is('user/temporary-ids*') ? 'active' : '' }}">
-    <i class="nav-icon bi bi-card-text"></i>
-    <p>Temporary IDs</p>
-  </a>
-</li>
-<li class="nav-item">
-  <a href="{{ route('user.lost-items.index') }}" 
-     class="nav-link {{ request()->is('user/lost-items*') ? 'active' : '' }}">
-    <i class="nav-icon bi bi-search"></i>
-    <p>Lost Items</p>
-  </a>
-</li>
+        @if(auth()->check() && auth()->user()->isManager())
+          {{-- Lost and Found Manager --}}
+          <li class="nav-header">Item Management</li>
+          
+          <li class="nav-item">
+            <a href="{{ route('lfm.items.create') }}" class="nav-link {{ request()->is('lfm/items/create') ? 'active' : '' }}">
+              <i class="nav-icon bi bi-plus-circle"></i>
+              <p>Add Found Item</p>
+            </a>
+          </li>
 
+          <li class="nav-item">
+            <a href="{{ route('lfm.lost.create') }}" class="nav-link {{ request()->is('lfm/lost/create') ? 'active' : '' }}">
+              <i class="nav-icon bi bi-search"></i>
+              <p>Add Lost Item</p>
+            </a>
+          </li>
 
+          <li class="nav-item">
+            <a href="{{ route('lfm.claims.index') }}" class="nav-link {{ request()->is('lfm/claims*') ? 'active' : '' }}">
+              <i class="nav-icon bi bi-check-circle"></i>
+              <p>Verify Claims</p>
+            </a>
+          </li>
+        @endif
+
+        {{-- Regular Users --}}
+        @if(auth()->check() && auth()->user()->isStudent())
+          <li class="nav-header">Regular Users</li>
+
+          <li class="nav-item">
+            <a href="{{ route('user.temporary-ids.index') }}" 
+               class="nav-link {{ request()->is('user/temporary-ids*') ? 'active' : '' }}">
+              <i class="nav-icon bi bi-card-text"></i>
+              <p>Temporary IDs</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ route('user.lost-items.index') }}" 
+               class="nav-link {{ request()->is('user/lost-items*') ? 'active' : '' }}">
+              <i class="nav-icon bi bi-search"></i>
+              <p>Lost Items</p>
+            </a>
+          </li>
+        @endif
 
         {{-- Settings --}}
         <li class="nav-header">Settings</li>
@@ -108,6 +114,7 @@
             <p>System Settings</p>
           </a>
         </li>
+
       </ul>
       <!--end::Sidebar Menu-->
     </nav>
