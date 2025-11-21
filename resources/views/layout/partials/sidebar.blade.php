@@ -59,7 +59,7 @@
           </li>
         @endif
 
-        @if(auth()->check() && auth()->user()->isManager())
+        @if(auth()->check() && auth()->user()->isManager() || auth()->check() && auth()->user()->isAdmin())
           {{-- Lost and Found Manager --}}
           <li class="nav-header">Item Management</li>
           
@@ -86,7 +86,7 @@
         @endif
 
         {{-- Regular Users --}}
-        @if(auth()->check() && auth()->user()->isStudent())
+        @if(auth()->check() && auth()->user()->isStudent() || auth()->check() && auth()->user()->isAdmin())
           <li class="nav-header">Regular Users</li>
 
           <li class="nav-item">
@@ -108,7 +108,7 @@
 
         {{--  ID Management Section --}}
         @if(auth()->user()->can('viewAny', App\Models\IdReplacement::class) || 
-            in_array(auth()->user()->role->type, ['Admin', 'ID Replacement Approvers', 'Regular']))
+            in_array(auth()->user()->role->type, ['Admin', 'ID Replacement Approvers']))
           <li class="nav-header">ID Management</li>
           <li class="nav-item">
             <a href="{{ route('users.request-id-replacement', ['user' => auth()->id()]) }}"
