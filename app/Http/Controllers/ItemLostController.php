@@ -6,6 +6,7 @@ use App\Http\Requests\StoreItemLostRequest;
 use App\Http\Requests\UpdateItemLostRequest;
 use App\Models\ItemLost;
 
+
 class ItemLostController extends Controller
 {
     /**
@@ -63,4 +64,6 @@ class ItemLostController extends Controller
     {
         //
     }
+
+   
 }
