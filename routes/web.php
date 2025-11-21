@@ -82,7 +82,13 @@ Route::middleware('auth')->group(function () {
             Route::post('/', [\App\Http\Controllers\IdReplacementController::class, 'store'])->name('user.temporary-ids.store');
             Route::get('/{idReplacement}', [\App\Http\Controllers\IdReplacementController::class, 'show'])->name('user.temporary-ids.show');
         });
-
     });
+
+    // -------------------------------
+    // ID Approver routes
+    // -------------------------------
+    Route::get('/id-approver',[UserController::class,'request_id_replacement'])->name('users.request-id-replacement');
+    Route::get('/id-approver/{replacement_id}/approve')->name('id-replacements.approve');
+    Route::get('/id-approver/{replacement_id}/reject')->name('id-replacements.reject');
 
 });
