@@ -42,7 +42,7 @@
               alt="User Image"
             />
             <p>
-              <small>Member since 2024</small>
+              <small>{{ Auth::user()->role->type }} since 2024</small>
             </p>
           </li>
           <!--end::User Image-->

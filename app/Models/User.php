@@ -63,6 +63,11 @@ class User extends Authenticatable
         return $this->role->type === "Admin";
     }
 
+    public function isStudent()
+    {
+        return $this->role->type === "Regular User";
+    }
+
     
     public function itemsClaimed()
     {
