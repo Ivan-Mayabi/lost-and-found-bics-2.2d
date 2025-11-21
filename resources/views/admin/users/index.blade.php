@@ -127,9 +127,9 @@
       <!-- /.card-body -->
       <div>
         {{-- Pagination --}}
-          {{-- <div class="mt-3">
+          <div class="mt-3">
                 {{ $users->links('pagination::bootstrap-5') }}
-          </div> --}}
+          </div>
       </div>
     </div>
     <!-- /.card -->
