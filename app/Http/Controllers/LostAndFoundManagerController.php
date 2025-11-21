@@ -48,16 +48,23 @@ class LostAndFoundManagerController extends Controller
             'date_lost'=>'required|date',
             'place_lost'=>'required',
             'description'=>'nullable',
-            'image_url'=>'nullable|url'
+            'image_url'=>'nullable|image|mimes:png,jpeg,jpg|max:2048'
         ]);
-        ItemLost::create($request->only(
-            'item_id',
-            'date_lost',
-            'place_lost',
-            'description',
-            'image_url'
-        ));
-        return redirect()->route('lfm.dashboard')->with('success','Lost item reported successfully');
+
+        $item = new ItemLost();
+        $item->item_id = $request->item_id;
+        $item->date_lost = $request->date_lost;
+        $item->place_lost = $request->place_lost;
+        $item->description = $request->description;
+        $item->save();
+
+        if($request->has('image_url')){
+            $path = $request->file('image_url')->store('items/lost/'.$item->id,'public');
+            $item->image_url = $path;
+            $item->save();
+        }
+
+       return redirect()->route('lfm.dashboard')->with('success','Lost item reported successfully');
     }
 
     public function verifyClaims() //verify claims

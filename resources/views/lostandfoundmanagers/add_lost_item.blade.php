@@ -17,7 +17,7 @@
         <div class="card-header">
             <div class="card-title">Record Lost Item</div>
         </div>
-        <form action="{{ route('lfm.lost.store') }}" method="POST">
+        <form action="{{ route('lfm.lost.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
                 <div class="mb-3">
@@ -50,7 +50,7 @@
 
                 <div class="mb-3">
                     <label for="image_url" class="form-label">Image URL (optional)</label>
-                    <input type="text" name="image_url" class="form-control"{{ old('image_url') }}>
+                    <input type="file" name="image_url" class="form-control"{{ old('image_url') }}>
                 </div>
             </div>
             <div class="card-footer">
