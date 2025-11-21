@@ -35,8 +35,11 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Status</th>
                 <th>Created At</th>
-                <th style="width: 200px">Actions</th>
+                @can('view',$users)
+                  <th style="width: 200px">Actions</th>
+                @endcan
               </tr>
             </thead>
             <tbody>
@@ -65,46 +68,55 @@
                 @endif
                 </td>
                 <td>{{ date("M d, Y", strtotime($user->created_at))}}</td>
+                @can('view',$user)
                 <td>
                   <div class="btn-group" role="group">
-                    <a href="{{ route('users.edit',$user->id)}}" 
-                       class="btn btn-warning btn-sm rounded-start" 
-                       title="Edit">
-                      <i class="bi bi-pencil"></i>
-                    </a>
-                    <form action="{{ route('users.reset-password',$user->id) }}" 
-                            method="POST" 
-                            class="d-inline"
-                            onsubmit="return confirm('Are you sure you want to reset this password?');">
+                    @can('update',$user)
+                        <a href="{{ route('users.edit',$user->id)}}" 
+                          class="btn btn-warning btn-sm rounded-start" 
+                          title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </a>
+                      @endcan
+
+                      <form action="{{ route('users.reset-password',$user->id) }}" 
+                              method="POST" 
+                              class="d-inline"
+                              onsubmit="return confirm('Are you sure you want to reset this password?');">
+                          @csrf
+                        <button type="submit" class="btn btn-success rounded-0 btn-sm" title="Reset Password">
+                          <i class="bi bi-key"></i>
+                        </button>
+                      </form>
+
+                      @can('delete',$user)
+                        <form action="{{ route('users.destroy',$user->id) }}" 
+                              method="POST" 
+                              class="d-inline"
+                              onsubmit="return confirm('Are you sure you want to delete this user?');">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-danger rounded-0 btn-sm" title="Delete">
+                            <i class="bi bi-trash"></i>
+                          </button>
+                        </form>
+                      @endcan
+
+                      <form action="{{ route('users.deactivate',$user->id) }}" method=POST onsubmit="return confirm('Do you want to deactivate/activate this user?')" class="d-inline">
                         @csrf
-                      <button type="submit" class="btn btn-success rounded-0 btn-sm" title="Reset Password">
-                        <i class="bi bi-key"></i>
-                      </button>
-                    </form>
-                    <form action="{{ route('users.destroy',$user->id) }}" 
-                          method="POST" 
-                          class="d-inline"
-                          onsubmit="return confirm('Are you sure you want to delete this user?');">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn btn-danger rounded-0 btn-sm" title="Delete">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </form>
-                    <form action="{{ route('users.deactivate',$user->id) }}" method=POST onsubmit="return confirm('Do you want to deactivate/activate this user?')" class="d-inline">
-                      @csrf
-                          @if($user->active==1)
-                            <button type="submit" title="Deactivate User" class="btn btn-danger rounded-end btn-sm">
-                            <i class="bi bi-ban"></i>
-                            </button>
-                          @else
-                            <button type="submit" title="Activate User" class="btn btn-success rounded-end btn-sm">
-                            <i class="bi bi-check2-all"></i>
-                            </button>
-                          @endif
-                    </form>
-                  </div>
-                </td>
+                            @if($user->active==1)
+                              <button type="submit" title="Deactivate User" class="btn btn-danger rounded-end btn-sm">
+                              <i class="bi bi-ban"></i>
+                              </button>
+                            @else
+                              <button type="submit" title="Activate User" class="btn btn-success rounded-end btn-sm">
+                              <i class="bi bi-check2-all"></i>
+                              </button>
+                            @endif
+                      </form>
+                    </div>
+                  </td>
+                @endcan
               </tr>
               @endforeach
             </tbody>
@@ -115,9 +127,9 @@
       <!-- /.card-body -->
       <div>
         {{-- Pagination --}}
-          {{-- <div class="mt-3">
+          <div class="mt-3">
                 {{ $users->links('pagination::bootstrap-5') }}
-          </div> --}}
+          </div>
       </div>
     </div>
     <!-- /.card -->
