@@ -18,9 +18,9 @@ Route::middleware('auth')->group(function(){
     Route::resource('users',UserController::class);
     Route::resource('roles',RoleController::class);
 
-// Route for reseting password
-Route::post('users/{user}/reset-password',[UserController::class,'reset_password'])->name('users.reset-password');
-Route::post('users/{user}/deactivate',[UserController::class,'deactivate'])->name('users.deactivate');
+    // Route for reseting password
+    Route::post('users/{user}/reset-password',[UserController::class,'reset_password'])->name('users.reset-password');
+    Route::post('users/{user}/deactivate',[UserController::class,'deactivate'])->name('users.deactivate');
 
     // routes for lost and found manager
     Route::prefix('lost-and-found-manager')->group(function () {
