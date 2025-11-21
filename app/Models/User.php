@@ -79,6 +79,9 @@ class User extends Authenticatable
         return $this->hasMany(IdReplacement::class);
     }
 
+    public function isApprover(){
+        return $this->role->type === 'ID Replacement Approver';
+    }
     public function isManager()
 {
     return $this->role->type === 'Manager';

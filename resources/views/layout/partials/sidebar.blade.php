@@ -106,6 +106,19 @@
           </li>
         @endif
 
+        {{--  ID Management Section --}}
+        @if(auth()->user()->can('viewAny', App\Models\IdReplacement::class) || 
+            in_array(auth()->user()->role->type, ['Admin', 'ID Replacement Approvers', 'Regular']))
+          <li class="nav-header">ID Management</li>
+          <li class="nav-item">
+            <a href="{{ route('users.request-id-replacement', ['user' => auth()->id()]) }}"
+               class="nav-link {{ request()->is('id-replacements*') ? 'active' : '' }}">
+              <i class="nav-icon bi bi-credit-card"></i>
+              <p>ID Replacements</p>
+            </a>
+          </li>
+        @endif
+
         {{-- Settings --}}
         <li class="nav-header">Settings</li>
         <li class="nav-item">

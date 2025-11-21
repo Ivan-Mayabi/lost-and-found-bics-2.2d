@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\IdReplacement;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\QueryException;
@@ -169,5 +170,27 @@ class UserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('login');
+    }
+
+    /**
+     * Show the table for approving ID replacement
+     */    
+    public function request_id_replacement(User $user){
+        $replacements = IdReplacement::all();
+        return view('id-approvers.approver',compact('replacements'));
+    }
+
+    public function approve_id_replacement(IdReplacement $idReplacement){
+        //idReplacement approval logic
+        $idReplacement->approved = 1;
+        $idReplacement->save();
+        return redirect()->back()->with('success','ID Replacement Approved Successfully');
+    }
+
+    public function reject_id_replacement(IdReplacement $idReplacement){
+        //idReplacement rejection logic
+        $idReplacement->approved = 0;
+        $idReplacement->save();
+        return redirect()->back()->with('success','ID Replacement Rejected Successfully');
     }
 }
