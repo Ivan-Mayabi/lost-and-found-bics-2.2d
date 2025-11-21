@@ -73,11 +73,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(IdReplacement::class);
     }
+
+    public function isManager()
+{
+    return $this->role->type === 'Manager';
 }
 
-    /**
-     * Check if admin
-     */
+}
+
     
 
 

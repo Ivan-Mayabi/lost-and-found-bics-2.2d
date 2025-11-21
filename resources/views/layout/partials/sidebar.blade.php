@@ -62,7 +62,7 @@
         @endif
 
         {{-- lost and found manager --}}
-        @if (auth()->check())
+        @if (auth()->check() && auth()->user()->isManager())
         <li class="nav-header">Item Management</li>
         
         <li class="nav-item">
