@@ -11,4 +11,17 @@ class Item extends Model
 {
     /** @use HasFactory<\Database\Factories\ItemFactory> */
     use HasFactory;
+        protected $fillable=[
+        'name',
+        'type',
+        'description'
+    ];
+
+    // Relationship
+    // 1 Item has many item instances that are lost
+    public function items_lost():HasMany
+    {
+        return $this->hasMany(ItemLost::class);
+    }
+
 }
