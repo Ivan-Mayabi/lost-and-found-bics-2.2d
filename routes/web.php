@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 // Public / Home Routes
 // --------------------
 Route::get('/',function(){
-    return view('landingPage');
+    return view('auth.login');
 })->name('/');
 
 // Login / Logout

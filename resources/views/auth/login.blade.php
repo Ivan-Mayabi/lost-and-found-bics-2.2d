@@ -79,10 +79,13 @@
                 @endforeach
         </div>
     @endif
-    <div class="login-box">
+    <img class="position-relative z-0" src="{{ asset('items.jpg')}}">
+    <div class="login-box position-absolute z-1">
         <div class="login-logo">
             <a href="{{ URL::to('/') }}">
-                <img src="{{ asset('favicon.png') }}" alt="{{ env('APP_NAME') }} Logo" width="60%" />
+                <div style="border-radius:100vh" class="bg-body-secondary">
+                    <img src="{{ asset('favicon.png') }}" alt="{{ env('APP_NAME') }} Logo" width="60%" />
+                </div>
             </a>
         </div>
         <!-- /.login-logo -->
