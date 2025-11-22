@@ -27,7 +27,7 @@
       <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
           <img
-            src="{{ asset('adminlte/assets/img/user2-160x160.jpg') }}"
+            src="https://avatar.iran.liara.run/username?username={{ auth()->user()->name }}"
             class="user-image rounded-circle shadow"
             alt="User Image"
           />
@@ -37,7 +37,7 @@
           <!--begin::User Image-->
           <li class="user-header text-bg-secondary">
             <img
-              src="{{ asset('adminlte/assets/img/user2-160x160.jpg') }}"
+              src="https://avatar.iran.liara.run/username?username={{ auth()->user()->name }}"
               class="rounded-circle shadow"
               alt="User Image"
             />
