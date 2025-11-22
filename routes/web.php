@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Route;
 // --------------------
 // Public / Home Routes
 // --------------------
-Route::get('/', [UserController::class, 'index'])->name('/');
+Route::get('/',function(){
+    return view('landingPage');
+})->name('/');
 
 // Login / Logout
 Route::get('login', [UserController::class, 'login'])->name('login');
