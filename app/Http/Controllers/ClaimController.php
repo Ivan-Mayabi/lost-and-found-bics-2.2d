@@ -47,7 +47,7 @@ class ClaimController extends Controller
             'verified' => false,
         ]);
 
-        return redirect()->route('regular.claims.index')
+        return redirect()->route('user.claims.index')
                          ->with('success', 'Claim submitted successfully!');
     }
 

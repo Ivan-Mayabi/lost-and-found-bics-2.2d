@@ -96,6 +96,16 @@
               <p>Temporary IDs</p>
             </a>
           </li>
+          
+          <li class="nav-item">
+            <a href="{{ route('user.claims.index') }}" 
+                class="nav-link {{ request()->is('regular/claims*') ? 'active' : '' }}">
+              <i class="nav-icon bi bi-clipboard-check"></i>
+            <p>My Claims</p>
+            </a>
+          </li>
+
+
 
           <li class="nav-item">
             <a href="{{ route('user.lost-items.index') }}" 
