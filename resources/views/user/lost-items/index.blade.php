@@ -1,8 +1,9 @@
 @extends('layout.admin')
+@section('title','Lost Items')
 
 @section('content')
 <div class="container mx-auto py-6">
-    <h1 class="text-2xl font-bold mb-4">My Lost Items</h1>
+    @section('page-title','Lost Items')
 
     @if(session('success'))
         <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
@@ -36,6 +37,7 @@
         <table class="min-w-full bg-white border rounded">
             <thead>
                 <tr>
+                    <th class="border px-4 py-2">Image</th>
                     <th class="border px-4 py-2">Description</th>
                     <th class="border px-4 py-2">Date Lost</th>
                     <th class="border px-4 py-2">Place Lost</th>
@@ -46,6 +48,7 @@
             <tbody>
                 @foreach($lostItems as $item)
                     <tr>
+                        <td class="border px-4 py-2"><img class=".img-fluid" width="100vw" src="{{ is_null($item->image_url)||preg_match("/^https:\/\/via\.placeholder\.com\/640x480?/",$item->image_url) ? asset('favicon.png') : asset('storage/'.$item->image_url)}}" ></td>
                         <td class="border px-4 py-2">{{ $item->description }}</td>
                         <td class="border px-4 py-2">{{ $item->date_lost }}</td>
                         <td class="border px-4 py-2">{{ $item->place_lost }}</td>
