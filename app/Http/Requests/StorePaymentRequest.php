@@ -12,7 +12,7 @@ class StorePaymentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::user()->isAdmin() || Auth::user()->isManager();
+        return Auth::user()->isAdmin() || Auth::user()->isManager() || Auth::user()->isStudent();
     }
 
     /**

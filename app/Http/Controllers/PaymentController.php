@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Payment;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
@@ -20,9 +22,11 @@ class PaymentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $token = $request->token;
+        $id = $request->id;
+        return view('user.temporary-id-payment.payment',compact('token','id'));
     }
 
     /**
@@ -30,7 +34,15 @@ class PaymentController extends Controller
      */
     public function store(StorePaymentRequest $request)
     {
-        //
+        $payment = new Payment();
+        $payment->method = "MPesa";
+        $payment->amount = 1000;
+        $payment->verified =0;
+        $payment->payment_id_token = Str::random(32);
+        $token = $payment->payment_id_token;
+        $payment->save();
+        $id = $payment->id;
+        return redirect()->route('payments.create',compact('token','id'))->with('success','You have successfully paid, please wait while your payment is verified');
     }
 
     /**
