@@ -17,6 +17,7 @@ class ItemLostFactory extends Factory
     public function definition(): array
     {
         return [
+            // This has been accomplished better in the seeder
             'item_id'=>random_int(0,50),
             'date_lost'=>fake()->date('Y-m-d'),
             'description'=>fake()->realText(10),
