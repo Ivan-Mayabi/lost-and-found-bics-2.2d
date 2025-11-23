@@ -20,6 +20,7 @@
                             <th>Replacement ID</th>
                             <th>Payment ID</th>
                             <th>User ID</th>
+                            <th>Status</th>
                             <th>Created At</th>
                             <th>Approved</th>
                         </tr>
@@ -29,27 +30,45 @@
                         <tr>
                             <td>{{ $replacement->id }}</td>
                             <td>{{ $replacement->payment_id ?? 'N/A' }}</td>
+                            <td>{{ $replacement->user->name }}</td>
                             @if($replacement->approved == 1)
-                            <td><span class="badge bg-success">{{ $replacement->user->name ?? 'N/A' }}</span></td>
+                                <td><span class="badge bg-success">{{ $replacement->approved }} Approved</span></td>
+                            @elseif($replacement->approved == 0)
+                                <td><span class="badge bg-danger">Not Approved</span></td>
                             @else
-                            <td><span class="badge bg-danger">{{ $replacement->user->name ?? 'N/A' }}</span></td>
+                                <td><span class="badge bg-warning text-black">Pending</span></td>
                             @endif
                             <td>{{ $replacement->created_at->format('Y-m-d') }}</td>
                             <td>
-                                @if($replacement->approved==0)
-                                <form action="{{ route('id-replacements.approve', $replacement->id) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                        <i class="bi-icons bi-check-circle"></i> Approve
-                                    </button>
-                                </form>
-                                @else
-                                <form action="{{ route('id-replacements.reject',$replacement->id) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bi-icons bi-x-circle"></i> Reject
-                                    </button>
-                                </form>
+                                @if($replacement->approved==0 && auth()->user()->isAdmin())
+                                    <form action="{{ route('id-replacements.approve', $replacement->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="bi-icons bi-check-circle"></i> Approve
+                                        </button>
+                                    </form>
+                                @elseif($replacement->approved==1 && auth()->user()->isAdmin())
+                                    <form action="{{ route('id-replacements.reject',$replacement->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="bi-icons bi-x-circle"></i> Reject
+                                        </button>
+                                    </form>
+                                @elseif($replacement->approved==2)
+                                    <form action="{{ route('id-replacements.approve', $replacement->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="bi-icons bi-check-circle"></i> Approve
+                                        </button>
+                                    </form>
+
+                                    <form action="{{ route('id-replacements.reject',$replacement->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="bi-icons bi-x-circle"></i> Reject
+                                        </button>
+                                    </form>
+
                                 @endif
                             </td>
                         </tr>

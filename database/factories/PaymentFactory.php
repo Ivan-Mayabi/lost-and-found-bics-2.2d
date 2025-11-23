@@ -20,7 +20,7 @@ class PaymentFactory extends Factory
         return [
             'method'=>fake()->randomElement(['Mpesa','Cash']),
             'amount'=>random_int(1000,1000),
-            'verified'=>random_int(0,1),
+            'verified'=>random_int(0,2),
             'payment_id_token'=>Str::random(32)
         ];
     }

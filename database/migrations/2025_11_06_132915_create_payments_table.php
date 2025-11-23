@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('method');
             $table->integer('amount');
-            $table->boolean('verified');
+            $table->unsignedTinyInteger('verified')->default(2)->comment('0 -> unverified, 1-> verified, 2->pending');
             $table->string('payment_id_token');
             $table->timestamps();
         });

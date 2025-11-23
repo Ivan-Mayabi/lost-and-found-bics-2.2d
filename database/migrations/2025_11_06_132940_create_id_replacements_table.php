@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('id_replacements', function (Blueprint $table) {
             $table->id();
             $table->string('id_lost');
-            $table->boolean('approved');
+            $table->unsignedTinyInteger('approved')->default(2)->comment('0 -> unverified, 1-> verified, 2->pending');
             $table->timestamps();
         });
     }
