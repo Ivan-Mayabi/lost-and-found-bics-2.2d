@@ -15,9 +15,14 @@ class ClaimController extends Controller
      */
     public function index()
     {
+        if(Auth::user()->isAdmin()){
+            $claims=Claim::paginate(env('DEFAULT_PAGINATE_NUMBER',10));
+        }
+        else{
         $claims = Claim::where('user_id', Auth::id())
                         ->with('lostItem')
                         ->get();
+        }
 
         return view('regular.claims.index', compact('claims'));
     }

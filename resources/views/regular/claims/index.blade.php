@@ -9,7 +9,11 @@
 @section('content')
 <div class="container mt-4">
 
-    <h2 class="mb-3">My Claims</h2>
+    @if(auth()->user()->isAdmin())
+        <h2 class="mb-3">All Claims</h2>
+    @else
+        <h2 class="mb-3">My Claims</h2>
+    @endif
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -23,6 +27,9 @@
                 <tr>
                     <th>Item Name</th>
                     <th>Description</th>
+                    @if(auth()->user()->isAdmin())
+                        <th>Claimant</th>
+                    @endif
                     <th>Status</th>
                     <th>Taken</th>
                     <th>Date Claimed</th>
@@ -33,6 +40,9 @@
                 <tr>
                     <td>{{ $claim->lostItem->item->name }}</td>
                     <td>{{ $claim->lostItem->description }}</td>
+                    @if(auth()->user()->isAdmin())
+                        <td>{{ $claim->user->name }}</td>
+                    @endif
                     <td>
                         @if($claim->verified)
                             <span class="badge bg-success">Verified</span>
@@ -50,6 +60,9 @@
                 @endforeach
             </tbody>
         </table>
+        @if(auth()->user()->isAdmin())
+            {{$claims->links('pagination::bootstrap-5')}}
+        @endif
     @endif
 
 </div>
