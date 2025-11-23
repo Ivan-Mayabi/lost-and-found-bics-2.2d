@@ -142,25 +142,54 @@ class UserController extends Controller
     /**
      * Authenticate the user
      */
+    // public function authenticate(Request $request){
+    //     // Validate the email and the name
+    //     // Attempt the authentication
+    //     request()->validate([
+    //         'email'=>['required','email'],
+    //         'password' => ['required']
+    //     ]);
+
+    //     // Get the email and the password
+    //     $credentials = $request->only(['email','password']);
+
+    //     // Try to  and if it works go to the previous intended page
+    //     if(Auth::attempt($credentials)){
+    //         return redirect()->intended('/users');
+    //     }
+    //     else{
+    //         return redirect()->route('login')->withErrors('general','Could not Log In, Wrong Username or Password');
+    //     }
+    // }
+
     public function authenticate(Request $request){
-        // Validate the email and the name
-        // Attempt the authentication
-        request()->validate([
-            'email'=>['required','email'],
-            'password' => ['required']
-        ]);
+    request()->validate([
+        'email'=>['required','email'],
+        'password' => ['required']
+    ]);
 
-        // Get the email and the password
-        $credentials = $request->only(['email','password']);
+    $credentials = $request->only(['email','password']);
 
-        // Try to  and if it works go to the previous intended page
-        if(Auth::attempt($credentials)){
-            return redirect()->intended('/users');
+    if(Auth::attempt($credentials)){
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        if ($user->isManager()) {
+            return redirect()->route('lfm.dashboard'); // send managers to their dashboard
+        } else if ($user->isAdmin()) {
+            return redirect()->route('users.index'); // admin goes to users page
+        } else if ($user->isApprover()) {
+            return redirect()->route('user.temporary-ids.index'); // approver goes to temporary IDs page
         }
-        else{
-            return redirect()->route('login')->withErrors('general','Could not Log In, Wrong Username or Password');
-        }
+         else {
+            return redirect()->route('user.lost-items.index'); // regular user
+        } 
+
+    } else {
+        return redirect()->route('login')->withErrors('general','Could not Log In, Wrong Username or Password');
     }
+}
+
 
     /**
      * Logout the user

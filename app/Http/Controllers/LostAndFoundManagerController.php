@@ -11,9 +11,10 @@ class LostAndFoundManagerController extends Controller
 {
     //
     public function index() //dashboard
+    
     {
         $items =  Item::paginate(env('PAGINATION_COUNT',10));
-        $claims = ItemClaimed::all();
+        //$claims = ItemClaimed::all();
         $lostItems = ItemLost::paginate(env('PAGINATION_COUNT',10));
         $claims=ItemClaimed::with(['user','item_lost'])->paginate(10);
         return view('lostandfoundmanagers.index',compact('items','lostItems','claims'));
