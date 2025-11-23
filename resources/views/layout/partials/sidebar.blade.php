@@ -122,11 +122,23 @@
         @if(auth()->user()->can('viewAny', App\Models\IdReplacement::class) || 
             in_array(auth()->user()->role->type, ['Admin', 'ID Replacement Approvers', 'Regular']))
           <li class="nav-header">ID Management</li>
+
           <li class="nav-item">
             <a href="{{ route('users.request-id-replacement', ['user' => auth()->id()]) }}"
                class="nav-link {{ request()->is('id-replacements*') ? 'active' : '' }}">
               <i class="nav-icon bi bi-credit-card"></i>
               <p>ID Replacements</p>
+            </a>
+          </li>
+
+          {{-- User Management Section --}}
+          <li class="nav-header">Payment Management</li>
+          
+          {{-- Payments --}}
+          <li class="nav-item">
+            <a href="{{ route('payments.index') }}" class="nav-link {{ request()->is('user*') ? 'active' : "" }}">
+              <i class="nav-icon bi bi-cash"></i>
+              <p>Payments</p>
             </a>
           </li>
         @endif

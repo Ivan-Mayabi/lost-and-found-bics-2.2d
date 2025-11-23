@@ -13,7 +13,8 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        $payments = Payment::paginate(env('DEFAULT_PAGINATE_NUMBER',10));
+        return view('admin.payments.index',compact('payments'));
     }
 
     /**
@@ -57,23 +58,22 @@ class PaymentController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Approve a payment
      */
-    public function destroy(Payment $payment)
+    public function approve(Payment $payment)
     {
-        $payment->delete();
-        return redirect()->route('payments.index')
-            ->with('success', 'Payment deleted successfully');
+        $payment->verified = 1;
+        $payment->save();
+        return redirect()->route('payments.index')->with('success','Payment Verified Successfully');
     }
 
     /**
-     * Verify payment
+     * Unverify a payment
      */
-    public function verify(Payment $payment)
+    public function reject(Payment $payment)
     {
-        $payment->update(['verified' => true]);
-
-        return redirect()->route('payments.index')
-            ->with('success', 'Payment verified successfully');
+        $payment->verified = 0;
+        $payment->save();
+        return redirect()->route('payments.index')->with('warning','Payment Rejected Successfully');
     }
 }

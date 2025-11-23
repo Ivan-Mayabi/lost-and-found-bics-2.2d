@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('method');
             $table->integer('amount');
             $table->boolean('verified');
+            $table->string('payment_id_token');
             $table->timestamps();
         });
     }

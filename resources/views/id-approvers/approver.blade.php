@@ -1,6 +1,7 @@
 @extends('layout.managers')
 
 @section('title', 'Make ID Replacement Approvals')
+@section('page-title', 'Make ID Replacement Approvals')
 
 @section('content')
     @if (session('success'))
@@ -35,19 +36,21 @@
                             @endif
                             <td>{{ $replacement->created_at->format('Y-m-d') }}</td>
                             <td>
+                                @if($replacement->approved==0)
                                 <form action="{{ route('id-replacements.approve', $replacement->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     <button type="submit" class="btn btn-success btn-sm">
                                         <i class="bi-icons bi-check-circle"></i> Approve
                                     </button>
                                 </form>
-
+                                @else
                                 <form action="{{ route('id-replacements.reject', $replacement->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     <button type="submit" class="btn btn-danger btn-sm">
                                         <i class="bi-icons bi-x-circle"></i> Reject
                                     </button>
                                 </form>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
