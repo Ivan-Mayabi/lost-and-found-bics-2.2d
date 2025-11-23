@@ -43,7 +43,7 @@ class ClaimController extends Controller
     public function store(StoreClaimRequest $request)
     {
         $request->validate([
-            'lost_item_id' => 'required|exists:lost_items,id',
+            'lost_item_id' => 'required|exists:items_lost,id',
         ]);
 
         Claim::create([

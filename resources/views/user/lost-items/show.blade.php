@@ -52,18 +52,19 @@
         @endif
 
         {{-- Claim Button --}}
-        @if(!$itemLost->taken)
-            <form action="{{ route('user.claims.store') }}" method="POST" class="mt-4">
-                @csrf
-                <input type="hidden" name="lost_item_id" value="{{ $itemLost->id }}">
-                <button type="submit" 
-                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                    Claim Item
-                </button>
-            </form>
-        @else
-            <p class="text-red-500 font-semibold mt-4">This item has already been taken.</p>
-        @endif
+@if(!$itemLost->taken)
+    <form action="{{ route('user.claims.store') }}" method="POST" class="mt-4">
+        @csrf
+        <input type="hidden" name="lost_item_id" value="{{ $itemLost->id }}">
+        <button type="submit" 
+                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            Claim Item
+        </button>
+    </form>
+@else
+    <p class="text-red-500 font-semibold mt-4">This item has already been taken.</p>
+@endif
+
 
         <a href="{{ route('user.lost-items.index') }}" class="inline-block mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Back to Lost Items

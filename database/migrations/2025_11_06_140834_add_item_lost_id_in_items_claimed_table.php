@@ -6,23 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('items_claimed', function (Blueprint $table) {
-            $table->foreignId('item_lost_id')->constrained('items_lost');
+            // Only add the lost_item_id column if it does not exist
+            if (!Schema::hasColumn('items_claimed', 'lost_item_id')) {
+                $table->foreignId('lost_item_id')->constrained('items_lost')->onDelete('cascade');
+            }
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('items_claimed', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('item_lost_id');
+            if (Schema::hasColumn('items_claimed', 'lost_item_id')) {
+                $table->dropForeign(['lost_item_id']);
+                $table->dropColumn('lost_item_id');
+            }
         });
     }
 };
