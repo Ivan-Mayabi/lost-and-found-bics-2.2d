@@ -23,9 +23,10 @@
                 name="search" 
                 value="{{ request('search') }}" 
                 placeholder="Search by description, item, or location" 
-                class="border rounded px-3 py-2 w-full"
+                class="border form-control w-50 d-inline rounded px-3 py-2 w-full"
             />
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            <button type="submit" class="bg-blue-500 btn btn-success text-white px-4 py-2 rounded hover:bg-blue-600">
+                <img width="20vw" src="https://img.icons8.com/ios-glyphs/30/search--v1.png" alt="Search V1"/>
                 Search
             </button>
         </form>
