@@ -1,23 +1,26 @@
 /*
  * ============================================
- * campus-theme.css - Cleaned & Optimized Overrides
+ * campus-theme.css - Centralized Theme Overrides (Enhanced)
  * ============================================
  */
 
 /* ============================
-   1. GLOBAL VARIABLES
+   1. GLOBAL CSS VARIABLES
 ============================ */
 :root {
-    --theme-pink-primary: #b3395b;
-    --theme-pink-darker: #c0395f;
-    --theme-soft-beige: #f9f5f4;
-    --theme-light-hover: #f9d5d3;
-
+    --theme-pink-primary: #b3395b; /* Primary sidebar BG */
+    --theme-pink-darker: #c0395f;  /* Darker pink (buttons, navbar) */
+    --theme-soft-beige: #f9f5f4;   /* Main background */
+    --theme-light-hover: #f9d5d3;  /* Soft hover for table/sidebar */
+    --theme-hover-alt: #fbe9e7;    /* Softer pink-beige for sidebar hover */
+    
+    /* Map to Bootstrap variables */
     --bs-primary: var(--theme-pink-darker);
     --bs-dark: var(--theme-pink-primary);
     --bs-body-bg: var(--theme-soft-beige);
-    --bs-body-color: #333;
+    --bs-body-color: #333333;
 
+    /* Alerts */
     --bs-success: #198754;
     --bs-danger: #ff6b6b;
     --bs-info: #0dcaf0;
@@ -25,25 +28,26 @@
 }
 
 /* ============================
-   2. FONTS
+   Fonts
 ============================ */
-body {
-    font-family: 'Source Sans 3', sans-serif;
-    background-color: var(--bs-body-bg);
-    color: var(--bs-body-color);
-}
-
 .waterfall-regular {
     font-family: "Waterfall", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Source Sans 3', sans-serif;
+    background-color: var(--bs-body-bg); 
 }
 
 /* ============================
-   3. SIDEBAR
+   2. SIDEBAR
 ============================ */
 .app-wrapper .app-sidebar {
     background-color: var(--theme-pink-primary) !important;
-    border: none;
-    box-shadow: none;
+    border: none !important;
+    box-shadow: none !important;
     transition: background-color 0.3s ease;
 }
 
@@ -54,139 +58,146 @@ body {
 }
 
 .app-wrapper .app-sidebar .brand-link {
+    background-color: transparent !important;
     color: #fff !important;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    background-color: transparent !important;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    font-size: 1.5rem;
 }
 
-/* Sidebar Menu Links */
+/* Navigation Links */
 .app-wrapper .app-sidebar .nav-link {
     color: #fff !important;
-    padding: 0.75rem 1.25rem;
-    border-radius: 8px;
+    padding: 0.75rem 1.25rem !important;
     transition: all 0.3s ease;
 }
 
+/* Navigation Link Hover/Active (softer, less pink) */
 .app-wrapper .app-sidebar .nav-link:hover,
 .app-wrapper .app-sidebar .nav-link.active {
-    background-color: var(--theme-pink-darker) !important;
-    color: #fff !important;
+    background-color: var(--theme-hover-alt) !important;
+    color: var(--theme-pink-primary) !important;
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
-/* Sidebar Headers */
+/* Navigation Header */
 .app-wrapper .app-sidebar .nav-header {
-    color: rgba(255, 255, 255, 0.85) !important;
-    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 0.8rem;
+    padding: 1rem 1.25rem 0.25rem 1.25rem !important;
     font-weight: 600;
-    padding: 1rem 1.25rem 0.25rem;
 }
 
 /* ============================
-   4. TOP NAVBAR
+   Top Navbar
 ============================ */
 .navbar {
     background-color: var(--theme-pink-darker) !important;
 }
-
 .navbar .nav-link,
 .navbar .navbar-brand {
     color: #fff !important;
 }
 
 /* ============================
-   5. CARDS
+   Cards
 ============================ */
 .card {
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    background-color: #fff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
     margin-bottom: 1.5rem;
 }
 
 .card-header {
-    background-color: #f3e6e6;
+    background-color: #f3e6e6 !important;
     font-weight: 600;
-    color: var(--theme-pink-primary);
+    color: var(--theme-pink-primary) !important;
 }
 
 /* ============================
-   6. TABLES
+   Tables
 ============================ */
 .table,
 .card table {
-    background-color: #fff8e7;
-    color: #333;
-    border-radius: 8px;
+    background-color: #fff8e7 !important;
+    color: #333 !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease;
 }
 
 .table thead {
-    background-color: var(--theme-pink-primary);
-    color: #fff;
+    background-color: var(--theme-pink-primary) !important;
+    color: #fff !important;
 }
 
 .table tbody tr:hover {
-    background-color: var(--theme-light-hover);
+    background: linear-gradient(90deg, #fbe9e7, #fff8e7);
+    transform: translateX(2px);
 }
 
 /* ============================
-   7. BUTTONS
+   Buttons
 ============================ */
-.btn-primary, .btn-approve {
-    background-color: var(--theme-pink-darker);
-    border-color: var(--theme-pink-darker);
-    color: #fff;
+.btn-primary,
+.btn-approve {
+    background-color: var(--theme-pink-darker) !important;
+    border-color: var(--theme-pink-darker) !important;
+    color: #fff !important;
     transition: all 0.3s ease;
 }
 
-.btn-primary:hover, .btn-approve:hover {
-    background-color: var(--theme-pink-primary);
-    border-color: var(--theme-pink-primary);
+.btn-primary:hover,
+.btn-approve:hover {
+    background-color: #e5989b !important;
+    border-color: #e5989b !important;
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.btn-danger, .btn-reject {
-    background-color: var(--bs-danger);
-    border-color: var(--bs-danger);
-    color: #fff;
+.btn-danger,
+.btn-reject {
+    background-color: var(--bs-danger) !important; 
+    border-color: var(--bs-danger) !important;
+    color: #fff !important;
 }
 
-.btn-danger:hover, .btn-reject:hover {
-    background-color: #ff4c4c;
-    border-color: #ff4c4c;
+.btn-danger:hover,
+.btn-reject:hover {
+    background-color: #ff4c4c !important;
+    border-color: #ff4c4c !important;
+    transform: scale(1.02);
 }
 
 /* ============================
-   8. ALERTS
+   Alerts / Flash Messages
 ============================ */
 .alert-success {
-    background-color: #d4edda;
-    color: #155724;
-    border-radius: 8px;
+    background-color: #d4edda !important;
+    color: #155724 !important;
+    border-radius: 8px !important;
 }
 
 .alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-    border-radius: 8px;
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+    border-radius: 8px !important;
 }
 
 /* ============================
-   9. FORMS
+   Forms
 ============================ */
 .form-control {
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    border-radius: 8px !important;
+    border: 1px solid #ccc !important;
 }
 
 /* ============================
-   10. MISC
+   Misc
 ============================ */
 .breadcrumb {
-    background-color: transparent;
-    padding: 0;
-    margin-bottom: 0;
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
     color: #333;
 }
