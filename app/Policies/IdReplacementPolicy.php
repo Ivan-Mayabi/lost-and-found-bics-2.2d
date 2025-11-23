@@ -22,8 +22,8 @@ class IdReplacementPolicy
     public function view(User $user, IdReplacement $idReplacement): bool
     {
         return $user->id === $idReplacement->user_id ||
-            $user->hasRole('admin') ||
-            $user->hasRole('id_approver');
+            $user->isAdmin() ||
+            $user->isApprover();
     }
 
     /**
@@ -31,7 +31,7 @@ class IdReplacementPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('student') || $user->hasRole('admin');
+        return $user->hasRole('student') || $user->isAdmin();
     }
 
     /**
@@ -39,8 +39,8 @@ class IdReplacementPolicy
      */
     public function update(User $user, IdReplacement $idReplacement): bool
     {
-        return $user->hasRole('admin') ||
-            $user->hasRole('id_approver') ||
+        return $user->isAdmin() ||
+            $user->isApprover() ||
             ($user->id === $idReplacement->user_id && $idReplacement->isPending());
     }
 
@@ -49,7 +49,7 @@ class IdReplacementPolicy
      */
     public function delete(User $user, IdReplacement $idReplacement): bool
     {
-        return $user->hasRole('admin') ||
+        return $user->isAdmin() ||
             ($user->id === $idReplacement->user_id && $idReplacement->isPending());
     }
 
@@ -58,7 +58,7 @@ class IdReplacementPolicy
      */
     public function restore(User $user, IdReplacement $idReplacement): bool
     {
-        return $user->hasRole('admin');
+        return $user->isAdmin();
     }
 
     /**
@@ -66,6 +66,6 @@ class IdReplacementPolicy
      */
     public function forceDelete(User $user, IdReplacement $idReplacement): bool
     {
-        return $user->hasRole('admin');
+        return $user->isAdmin();
     }
 }

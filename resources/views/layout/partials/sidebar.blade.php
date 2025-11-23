@@ -96,7 +96,7 @@
             <a href="{{ route('user.temporary-ids.index') }}" 
                class="nav-link {{ request()->is('user/temporary-ids*') ? 'active' : '' }}">
               <i class="nav-icon bi bi-card-text"></i>
-              <p>Temporary IDs</p>
+              <p>{{ auth()->user()->isAdmin() ? 'All Temporary IDs' : 'My Temporary IDs'}}</p>
             </a>
           </li>
 
@@ -112,7 +112,7 @@
             <a href="{{ route('user.claims.index') }}" 
                 class="nav-link {{ request()->is('regular/claims*') ? 'active' : '' }}">
               <i class="nav-icon bi bi-clipboard-check"></i>
-            <p>My Claims</p>
+            <p>{{ auth()->user()->isAdmin() ? 'All claims' : 'My Claims'}}</p>
             </a>
           </li>
 

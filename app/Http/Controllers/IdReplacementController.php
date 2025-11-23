@@ -40,8 +40,13 @@ class IdReplacementController extends Controller
      */
     public function indexView()
     {
-        $idReplacements = IdReplacement::where('user_id', Auth::id())->latest()->get();
-        return view('user.temporary-ids.index', compact('idReplacements'));
+        if(Auth::user()->isAdmin()){
+            $idReplacements = IdReplacement::paginate(env('DEFAULT_PAGINATE_NUMBER',10));
+        }
+        else{
+            $idReplacements = IdReplacement::where('user_id', Auth::id())->latest()->get();
+        }
+            return view('user.temporary-ids.index', compact('idReplacements'));
     }
 
     /**

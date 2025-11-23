@@ -25,10 +25,15 @@
         <tr>
             <th>Temp ID</th>
             <th>Original ID</th>
+            @if(auth()->user()->isAdmin())
+                <th>Requester</th>
+            @endif
             <th>Payment ID</th>
             <th>Status</th>
             <th>Created At</th>
-            <th>Actions</th>
+            @if(!(auth()->user()->isAdmin()))
+                <th>Actions</th>
+            @endif
         </tr>
     </thead>
 
@@ -37,11 +42,16 @@
         <tr>
             <td>{{ $idReplacement->id }}</td>
             <td>{{ $idReplacement->id_lost }}</td>
+            @if(auth()->user()->isAdmin())
+                <td>{{ $idReplacement->user->name }}</td>
+            @endif
             <td>{{ $idReplacement->payment_id }}</td>
 
             <td>
-                @if($idReplacement->approved)
+                @if($idReplacement->approved==1)
                     <span class="badge bg-success">Approved</span>
+                @elseif($idReplacement->approved==0)
+                    <span class="badge bg-danger">Not Approved</span>
                 @else
                     <span class="badge bg-warning text-black">Pending</span>
                 @endif
@@ -50,9 +60,11 @@
             <td>{{ $idReplacement->created_at->format('d-m-Y H:i') }}</td>
 
             <td>
+                @if(!(auth()->user()->isAdmin()))
                 <a href="{{ route('user.temporary-ids.show', $idReplacement) }}" class="btn btn-sm btn-info text-black">
                     More Details
                 </a>
+                @endif
             </td>
         </tr>
         @empty
@@ -62,4 +74,7 @@
         @endforelse
     </tbody>
 </table>
+@if(auth()->user()->isAdmin())
+    {{ $idReplacements->links('pagination::bootstrap-5') }}
+@endif
 @endsection
