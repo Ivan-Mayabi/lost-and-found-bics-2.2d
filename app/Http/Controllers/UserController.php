@@ -80,7 +80,9 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->get('name');
         $user->email= $request->get('email');
-        $user->role_id= $request->get('role');
+    // Assign role from request or default to 'Regular' if not provided
+    $roleId = $request->get('role') ?? Role::where('type', 'Regular')->value('id');
+    $user->role_id = $roleId;
         $user->password = Hash::make('password');
         $user->save();
         return redirect()->route('users.index')->with('success','User Added Successfully');
