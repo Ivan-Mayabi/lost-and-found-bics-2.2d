@@ -143,6 +143,7 @@
                         <th>Claim ID</th>
                         <th>Item</th>
                         <th>Claimant</th>
+                        <th>Status</th>
                         <th>Date Claimed</th>
                     </tr>
                 </thead>
@@ -152,6 +153,13 @@
                         <td>{{ $claim->id }}</td>
                         <td>{{ $claim->item_lost->item->name ?? 'N/A' }}</td>
                         <td>{{ $claim->user->name ?? 'N/A' }}</td>
+                         @if($claim->verified==1)
+                            <td><span class="badge bg-success">Verified</span></td>
+                        @elseif($claim->verified==0)
+                            <td><span class="badge bg-danger">Not Verified</span></td>
+                        @else
+                            <td><span class="badge bg-warning text-black">Pending</span></td>
+                        @endif
                         <td>{{ $claim->created_at->format('Y-m-d') }}</td>
                     </tr>
                     @endforeach
