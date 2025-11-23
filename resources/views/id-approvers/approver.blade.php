@@ -44,7 +44,7 @@
                                     </button>
                                 </form>
                                 @else
-                                <form action="{{ route('id-replacements.reject', $replacement->id) }}" method="POST" style="display:inline-block;">
+                                <form action="{{ route('id-replacements.reject',$replacement->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     <button type="submit" class="btn btn-danger btn-sm">
                                         <i class="bi-icons bi-x-circle"></i> Reject
