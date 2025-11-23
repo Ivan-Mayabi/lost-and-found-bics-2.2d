@@ -1,0 +1,162 @@
+/* Custom Pastel Theme */
+:root {
+    /* Primary Colors */
+    --primary-light: #A8E6CF;
+    --primary: #7FD8BE;
+    --primary-dark: #5EC4B1;
+    
+    /* Secondary Colors */
+    --secondary-light: #FFD3B6;
+    --secondary: #FFAAA5;
+    --secondary-dark: #FF8B94;
+    
+    /* Accent Colors */
+    --accent-1: #D4A5C3;
+    --accent-2: #9BE7FF;
+    --accent-3: #F7F0C6;
+    
+    /* Backgrounds */
+    --bg-primary: #F9F9F9;
+    --bg-secondary: #F0F0F0;
+    --bg-card: #FFFFFF;
+    
+    /* Text Colors */
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-muted: #999999;
+}
+
+/* Override AdminLTE Variables */
+[data-bs-theme=light] {
+    --bs-primary: var(--primary);
+    --bs-secondary: var(--secondary);
+    --bs-success: #A8E6CF;
+    --bs-info: #9BE7FF;
+    --bs-warning: #FFD3B6;
+    --bs-danger: #FFAAA5;
+    --bs-light: #F9F9F9;
+    --bs-dark: #333333;
+    
+    /* Backgrounds */
+    --bs-body-bg: var(--bg-primary);
+    --bs-body-color: var(--text-primary);
+}
+
+/* Navigation */
+.main-sidebar {
+    background-color: var(--primary-dark);
+    color: white;
+}
+
+.nav-sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.nav-sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.nav-sidebar .nav-link.active {
+    background-color: var(--primary-light);
+    color: var(--text-primary);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    background-color: var(--bg-card);
+}
+
+.card-header {
+    background-color: var(--bg-card);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-weight: 600;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-dark);
+    border-color: var(--secondary-dark);
+}
+
+/* Tables */
+.table {
+    background-color: var(--bg-card);
+}
+
+.table thead th {
+    border-bottom: 2px solid var(--bg-secondary);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Forms */
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(127, 216, 190, 0.25);
+}
+
+/* Alerts */
+.alert {
+    border: none;
+    color: white;
+}
+
+.alert-success {
+    background-color: var(--bs-success);
+}
+
+.alert-info {
+    background-color: var(--bs-info);
+}
+
+.alert-warning {
+    background-color: var(--bs-warning);
+}
+
+.alert-danger {
+    background-color: var(--bs-danger);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+/* Hover effects */
+.hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

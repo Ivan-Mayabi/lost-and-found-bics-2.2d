@@ -17,6 +17,37 @@ use Illuminate\Support\Facades\Log;
 class UserController extends Controller
 {
     use AuthorizesRequests;
+
+    /**
+     * Show the registration form
+     */
+    public function showRegisterForm()
+    {
+        return view('auth.register');
+    }
+
+    /**
+     * Handle registration
+     */
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        // Optionally assign a default role, e.g. Regular
+        $user->role_id = \App\Models\Role::where('type', 'Regular')->value('id');
+        $user->save();
+
+    // Do not log in the user automatically. Redirect to login page with success message.
+    return redirect()->route('login')->with('success', 'Registration successful! Please log in.');
+    }
     /**
      * Display a listing of the resource.
      */

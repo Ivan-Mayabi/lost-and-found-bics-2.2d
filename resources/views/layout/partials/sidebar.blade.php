@@ -1,5 +1,6 @@
 <!--begin::Sidebar--> 
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="light">
+  @auth
   <!--begin::Sidebar Brand-->
   <div class="sidebar-brand">
     <!--begin::Brand Link-->
@@ -163,5 +164,5 @@
     </nav>
   </div>
   <!--end::Sidebar Wrapper-->
+  @endauth
 </aside>
-<!--end::Sidebar-->

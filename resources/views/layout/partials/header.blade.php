@@ -23,6 +23,7 @@
       </li>
       <!--end::Fullscreen Toggle-->
       
+      @auth
       <!--begin::User Menu Dropdown-->
       <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -31,7 +32,7 @@
             class="user-image rounded-circle shadow"
             alt="User Image"
           />
-          <span class="d-none d-md-inline">{{ auth()->user()->name ?? 'Guest' }}</span>
+          <span class="d-none d-md-inline">{{ auth()->user()->name }}</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
           <!--begin::User Image-->
@@ -46,7 +47,6 @@
             </p>
           </li>
           <!--end::User Image-->
-          
           <!--begin::Menu Footer-->
           <li class="user-footer">
             <a href="#" class="btn btn-default btn-flat">Profile</a>
@@ -58,6 +58,15 @@
           <!--end::Menu Footer-->
         </ul>
       </li>
+      @endauth
+      @guest
+      <li class="nav-item">
+        <a href="{{ route('login') }}" class="btn btn-thibitisha me-2">Login</a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('register') }}" class="btn btn-outline-primary">Sign Up</a>
+      </li>
+      @endguest
       <!--end::User Menu Dropdown-->
     </ul>
     <!--end::End Navbar Links-->

@@ -72,6 +72,11 @@
 
 <body class="login-page bg-body-secondary">
       {{-- show login errors, make the div appear at the top --}}
+    @if (session('success'))
+        <div class="alert alert-success m-3">
+            {{ session('success') }}
+        </div>
+    @endif
     @if ($errors->any())
         <div class="alert alert-danger m-3">
                 @foreach ($errors->all() as $error)
@@ -124,6 +129,7 @@
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-thibitisha mb-2"> <i
                                         class="bi bi-box-arrow-in-right"></i> Login</button>
+                                <a href="{{ route('register') }}" class="btn btn-thibitisha">Sign Up</a>
                             </div>
                         </div>
                     </div>

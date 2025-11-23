@@ -16,10 +16,13 @@ Route::get('/',function(){
     return view('auth.login');
 })->name('/');
 
-// Login / Logout
+// Login / Logout / Register
 Route::get('login', [UserController::class, 'login'])->name('login');
 Route::post('authenticate', [UserController::class, 'authenticate'])->name('authenticate');
 Route::post('logout', [UserController::class, 'logout'])->name('logout');
+// Register
+Route::get('register', [UserController::class, 'showRegisterForm'])->name('register');
+Route::post('register', [UserController::class, 'register']);
 
 // --------------------
 // Protected Routes
