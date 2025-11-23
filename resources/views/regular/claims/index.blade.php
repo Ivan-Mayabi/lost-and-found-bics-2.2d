@@ -44,8 +44,10 @@
                         <td>{{ $claim->user->name }}</td>
                     @endif
                     <td>
-                        @if($claim->verified)
+                        @if($claim->verified==1)
                             <span class="badge bg-success">Verified</span>
+                        @elseif($claim->verified==0)
+                            <span class="badge bg-danger">Not Verified</span>
                         @else
                             <span class="badge bg-warning text-black">Pending</span>
                         @endif
