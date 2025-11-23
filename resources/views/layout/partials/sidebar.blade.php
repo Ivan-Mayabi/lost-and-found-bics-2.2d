@@ -107,8 +107,6 @@
             </a>
           </li>
 
-
-
           <li class="nav-item">
             <a href="{{ route('user.lost-items.index') }}" 
                class="nav-link {{ request()->is('user/lost-items*') ? 'active' : '' }}">

@@ -5,6 +5,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemLostController;
 use App\Http\Controllers\ClaimController;
+use App\Http\Controllers\IdReplacementController;
 use Illuminate\Support\Facades\Route;
 
 // --------------------
@@ -90,7 +91,7 @@ Route::middleware('auth')->group(function () {
     // ID Approver routes
     // -------------------------------
     Route::get('/id-approver',[UserController::class,'request_id_replacement'])->name('users.request-id-replacement');
-    Route::get('/id-approver/{replacement_id}/approve')->name('id-replacements.approve');
-    Route::get('/id-approver/{replacement_id}/reject')->name('id-replacements.reject');
+    Route::post('/id-approver/{replacement_id}/approve', [IdReplacementController::class, 'approve'])->name('id-replacements.approve');
+    Route::post('/id-approver/{replacement_id}/reject',[IdReplacementController::class,'reject'])->name('id-replacements.reject');
 
 });

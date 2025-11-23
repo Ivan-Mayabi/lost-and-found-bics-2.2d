@@ -179,7 +179,7 @@ class UserController extends Controller
         } else if ($user->isAdmin()) {
             return redirect()->route('users.index'); // admin goes to users page
         } else if ($user->isApprover()) {
-            return redirect()->route('user.temporary-ids.index'); // approver goes to temporary IDs page
+            return redirect()->route('users.request-id-replacement'); // approver goes to approvals page
         }
          else {
             return redirect()->route('user.lost-items.index'); // regular user
