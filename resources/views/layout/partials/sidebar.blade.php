@@ -98,6 +98,14 @@
               <p>Temporary IDs</p>
             </a>
           </li>
+
+          <li class="nav-item">
+            <a href="{{ route('payments.create') }}" 
+                class="nav-link {{ request()->is('regular/claims*') ? 'active' : '' }}">
+              <i class="nav-icon bi bi-credit-card"></i>
+            <p>Pay for Temporary Id</p>
+            </a>
+          </li>
           
           <li class="nav-item">
             <a href="{{ route('user.claims.index') }}" 
@@ -106,7 +114,6 @@
             <p>My Claims</p>
             </a>
           </li>
-
 
 
           <li class="nav-item">
@@ -131,7 +138,7 @@
             </a>
           </li>
 
-          {{-- User Management Section --}}
+          {{-- Payment Management Section --}}
           <li class="nav-header">Payment Management</li>
           
           {{-- Payments --}}
