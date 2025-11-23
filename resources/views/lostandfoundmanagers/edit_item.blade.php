@@ -1,6 +1,8 @@
 @extends('layout.managers')
 
 @section('title', 'Edit Item')
+@section('page-title', 'Edit Item')
+
 
 @section('content')
 <div class="card card-primary card-outline">
