@@ -31,12 +31,14 @@
         data-accordion="false"
       >
         {{-- Dashboard --}}
+        @if(auth()->user()->isAdmin() || auth()->user()->isManager())
         <li class="nav-item">
           <a href="{{ URL::to('/') }}" class="nav-link {{ request()->is('/') ? 'active' : "" }}">
             <i class="nav-icon bi bi-speedometer"></i>
             <p>Dashboard</p>
           </a>
         </li>
+        @endif
 
         @if(auth()->check() && auth()->user()->isAdmin())
           {{-- User Management Section --}}
