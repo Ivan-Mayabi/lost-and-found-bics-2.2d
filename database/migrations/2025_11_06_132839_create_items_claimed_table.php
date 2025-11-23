@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('items_claimed', function (Blueprint $table) {
             $table->id();
-            $table->boolean('verified');
+            $table->unsignedTinyInteger('verified')->default(2)->comment('0 -> unverified, 1-> verified, 2->pending');
             $table->timestamps();
         });
     }

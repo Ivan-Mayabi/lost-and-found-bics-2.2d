@@ -20,7 +20,7 @@ class IdReplacementFactory extends Factory
             'id_lost'=>random_int(100000,999999),
             'payment_id'=>random_int(1,40),
             'user_id'=>random_int(1,50),
-            'approved'=>random_int(0,1)
+            'approved'=>random_int(0,2)
         ];
     }
 }

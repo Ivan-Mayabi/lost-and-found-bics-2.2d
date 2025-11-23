@@ -19,7 +19,7 @@ class ItemClaimedFactory extends Factory
         return [
             'item_lost_id'=>random_int(1,100),
             'user_id'=>random_int(1,50),
-            'verified'=>random_int(0,1),
+            'verified'=>random_int(0,2),
 
         ];
     }
