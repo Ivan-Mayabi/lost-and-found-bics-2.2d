@@ -36,8 +36,8 @@
                             <input required type="text" name="type" class="form-control" value={{ old('type') }} >
                         </div>
                 <div class="mb-3">
-                    <label for="date_lost" class="form-label">Date Lost</label>
-                    <input type="date" name="date_lost" class="form-control" value="{{ old('date_lost') }}" required>
+                    <label for="date_lost" class="form-label">Date and time lost</label>
+                    <input type="datetime-local" name="date_lost" class="form-control" value="{{ old('date_lost') }}"required>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Place Lost</label>

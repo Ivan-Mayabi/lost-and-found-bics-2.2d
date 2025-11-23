@@ -46,7 +46,7 @@ class LostAndFoundManagerController extends Controller
     {
         $request->validate([
             'item_id'=>'required|exists:items,id',
-            'date_lost'=>'required|date',
+            'date_lost' => 'required|date_format:Y-m-d\TH:i',
             'place_lost'=>'required',
             'description'=>'nullable',
             'image_url'=>'nullable|image|mimes:png,jpeg,jpg|max:2048'
@@ -151,7 +151,7 @@ public function updateLostItem(Request $request, $id)
 
     $request->validate([
         'item_id' => 'required|exists:items,id',
-        'date_lost' => 'required|date',
+        'date_lost' => 'required|date_format:Y-m-d\TH:i',
         'place_lost' => 'required|string|max:255',
         'description' => 'nullable|string',
         'image_url' => 'nullable|url'

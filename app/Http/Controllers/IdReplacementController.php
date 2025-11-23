@@ -85,7 +85,7 @@ class IdReplacementController extends Controller
             // Blade form submission logic (your current code)
             $request->validate([
                 'id_lost' => 'required|string|max:50',
-                'payment_id' => 'required|string|max:100',
+                'payment_id' => 'required|integer',
             ]);
 
             IdReplacement::create([
