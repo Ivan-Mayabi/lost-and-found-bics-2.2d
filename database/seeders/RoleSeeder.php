@@ -23,7 +23,7 @@ class RoleSeeder extends Seeder
 
     //Regular Role (for registration compatibility, type must be 'Regular')
     $regular = new Role();
-    $regular->type = "Regular";
+    $regular->type = "Regular User";
     $regular->save();
 
         //Lost & Found Manager Role

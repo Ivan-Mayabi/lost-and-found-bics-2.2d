@@ -131,7 +131,7 @@
 
         {{--  ID Management Section --}}
         @if(auth()->user()->can('viewAny', App\Models\IdReplacement::class) || 
-            in_array(auth()->user()->role->type, ['Admin', 'ID Replacement Approvers', 'Regular']))
+            in_array(auth()->user()->role->type, ['Admin', 'ID Replacement Approvers']))
           <li class="nav-header">ID Management</li>
 
           <li class="nav-item">
