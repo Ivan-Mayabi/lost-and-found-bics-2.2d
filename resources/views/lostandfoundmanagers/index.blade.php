@@ -4,12 +4,12 @@
 
 {{--access restriction --}}
 
-@if(!auth()->check() || auth()->user()->role->type !== 'Lost & Found Manager')
+{{-- @if(!auth()->check() || auth()->user()->role->type !== 'Lost & Found Manager')
     <div class="alert alert-danger text-center mt-5">
         You do not have permission to access the Lost & Found dashboard.
     </div>
     @php return; @endphp
-@endif
+@endif --}}
 
 @section('content')
 
