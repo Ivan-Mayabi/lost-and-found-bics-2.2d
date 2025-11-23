@@ -33,7 +33,7 @@
         {{-- Dashboard --}}
         @if(auth()->user()->isAdmin() || auth()->user()->isManager())
         <li class="nav-item">
-          <a href="{{ URL::to('/') }}" class="nav-link {{ request()->is('/') ? 'active' : "" }}">
+          <a href="{{ route('lfm.dashboard') }}" class="nav-link {{ request()->is('/') ? 'active' : "" }}">
             <i class="nav-icon bi bi-speedometer"></i>
             <p>Dashboard</p>
           </a>

@@ -83,9 +83,9 @@ class User extends Authenticatable
         return $this->role->type === 'ID Replacement Approver';
     }
     public function isManager()
-{
-    return $this->role->type === 'Lost & Found Manager';
-}
+    {
+        return $this->role->type === 'Lost & Found Manager';
+    }
 
 }
 
