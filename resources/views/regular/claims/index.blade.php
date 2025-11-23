@@ -15,7 +15,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    @if($claims->count() == 0)
+    @if(count($claims)==0)
         <p>You haven't claimed any items yet.</p>
     @else
         <table class="table table-bordered">
@@ -24,21 +24,27 @@
                     <th>Item Name</th>
                     <th>Description</th>
                     <th>Status</th>
+                    <th>Taken</th>
                     <th>Date Claimed</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($claims as $claim)
                 <tr>
-                    <td>{{ $claim->lostItem->name }}</td>
+                    <td>{{ $claim->lostItem->item->name }}</td>
                     <td>{{ $claim->lostItem->description }}</td>
                     <td>
                         @if($claim->verified)
                             <span class="badge bg-success">Verified</span>
                         @else
-                            <span class="badge bg-warning">Pending</span>
+                            <span class="badge bg-warning text-black">Pending</span>
                         @endif
                     </td>
+                    @if($claim->lostItem->taken == 0)
+                        <td><span class="badge bg-warning text-black">Not yet Taken</span></td>
+                    @else
+                        <td><span class="badge bg-success">{{$claim->lostItem->date_taken->format('d M Y')}}</span></td>
+                    @endif
                     <td>{{ $claim->created_at->format('d M Y') }}</td>
                 </tr>
                 @endforeach

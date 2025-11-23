@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\ItemLost;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Claim extends Model
 {
@@ -19,11 +20,11 @@ class Claim extends Model
         'verified'
     ];
 
-    public function user() {
-        return $this->belongsTo(User::class);
+    public function user(): BelongsTo {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function lostItem() {
-        return $this->belongsTo(ItemLost::class, 'lost_item_id');
+    public function lostItem(): BelongsTo {
+        return $this->belongsTo(ItemLost::class, 'item_lost_id');
     }
 }
