@@ -42,7 +42,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         // Optionally assign a default role, e.g. Regular
-        $user->role_id = \App\Models\Role::where('type', 'Regular')->value('id');
+        $user->role_id = Role::where('type', 'Regular User')->value('id');
         $user->save();
 
     // Do not log in the user automatically. Redirect to login page with success message.
