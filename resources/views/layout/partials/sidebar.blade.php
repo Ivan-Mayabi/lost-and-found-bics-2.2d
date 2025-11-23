@@ -59,7 +59,7 @@
           </li>
         @endif
 
-        @if(auth()->check() && auth()->user()->isManager() || auth()->check() && auth()->user()->isAdmin())
+        @if(auth()->check() && (auth()->user()->isManager() || auth()->user()->isAdmin()))
           {{-- Lost and Found Manager --}}
           <li class="nav-header">Item Management</li>
           

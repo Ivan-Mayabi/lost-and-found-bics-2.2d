@@ -84,7 +84,7 @@ class User extends Authenticatable
     }
     public function isManager()
 {
-    return $this->role->type === 'Manager';
+    return $this->role->type === 'Lost & Found Manager';
 }
 
 }
