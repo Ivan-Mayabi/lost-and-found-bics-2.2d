@@ -48,20 +48,35 @@
                 <td>{{$payment->payment_id_token}}</td>
                 @if ($payment->verified == 1)
                     <td><span class="badge bg-success">Verified</td>
+                @elseif($payment->verified==0)
+                    <td><span class="badge bg-danger text-black">Not Verified</td>
                 @else
-                    <td><span class="badge bg-danger text-black">Not yet Verified</td>
+                    <td><span class="badge bg-warning text-black">Pending</td>
                 @endif
                 <td>{{ date("M d, Y", strtotime($payment->created_at))}}</td>
                 <td>{{ date("M d, Y",strtotime($payment->updated_at))}}</td>
                 <td>
-                    @if($payment->verified == 0) 
+                    @if($payment->verified == 0 && auth()->user()->isAdmin()) 
                         <form action="{{ route('payments.approve', $payment->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             <button type="submit" class="btn btn-success btn-sm">
                                 <i class="bi-icons bi-check-circle"></i> Approve
                             </button>
                         </form>
-                    @else
+                    @elseif($payment->verified == 1 && auth()->user()->isAdmin())
+                        <form action="{{ route('payments.reject', $payment->id) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="bi-icons bi-x-circle"></i> Reject
+                            </button>
+                        </form>
+                      @else
+                        <form action="{{ route('payments.approve', $payment->id) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            <button type="submit" class="btn btn-success btn-sm">
+                                <i class="bi-icons bi-check-circle"></i> Approve
+                            </button>
+                        </form>
                         <form action="{{ route('payments.reject', $payment->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             <button type="submit" class="btn btn-danger btn-sm">
