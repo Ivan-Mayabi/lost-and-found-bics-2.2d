@@ -66,7 +66,13 @@ class LostAndFoundManagerController extends Controller
             $item->save();
         }
 
-       return redirect()->route('lfm.dashboard')->with('success','Lost item reported successfully');
+        if(Auth::user()->isStudent()){
+            $items = Item::all();
+            return redirect()->route('lfm.lost.create')->with('success','Lost item reported successfully');
+        }
+        else{
+            return redirect()->route('lfm.dashboard')->with('success','Lost item reported successfully');
+        }
     }
 
     public function verifyClaims() //verify claims

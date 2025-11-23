@@ -62,30 +62,34 @@
           </li>
         @endif
 
-        @if(auth()->check() && (auth()->user()->isManager() || auth()->user()->isAdmin()))
+        @if(auth()->check() && (auth()->user()->isManager() || auth()->user()->isAdmin() || auth()->user()->isStudent()))
           {{-- Lost and Found Manager --}}
-          <li class="nav-header">Item Management</li>
+            <li class="nav-header">Item Management</li>
           
-          <li class="nav-item">
-            <a href="{{ route('lfm.items.create') }}" class="nav-link {{ request()->is('lfm/items/create') ? 'active' : '' }}">
-              <i class="nav-icon bi bi-plus-circle"></i>
-              <p>Add Items</p>
-            </a>
-          </li>
+          @if(auth()->check() && (auth()->user()->isManager() || auth()->user()->isAdmin()))
+            <li class="nav-item">
+              <a href="{{ route('lfm.items.create') }}" class="nav-link {{ request()->is('lfm/items/create') ? 'active' : '' }}">
+                <i class="nav-icon bi bi-plus-circle"></i>
+                <p>Add Items</p>
+              </a>
+            </li>
+          @endif
 
-          <li class="nav-item">
-            <a href="{{ route('lfm.lost.create') }}" class="nav-link {{ request()->is('lfm/lost/create') ? 'active' : '' }}">
-              <i class="nav-icon bi bi-search"></i>
-              <p>Add Lost Item</p>
-            </a>
-          </li>
+            <li class="nav-item">
+              <a href="{{ route('lfm.lost.create') }}" class="nav-link {{ request()->is('lfm/lost/create') ? 'active' : '' }}">
+                <i class="nav-icon bi bi-search"></i>
+                <p>{{ auth()->user()->isStudent() ? 'Report Lost Item' : 'Add Lost Item'}}</p>
+              </a>
+            </li>
 
-          <li class="nav-item">
-            <a href="{{ route('lfm.claims.index') }}" class="nav-link {{ request()->is('lfm/claims*') ? 'active' : '' }}">
-              <i class="nav-icon bi bi-check-circle"></i>
-              <p>Verify Claims</p>
-            </a>
-          </li>
+          @if(auth()->check() && (auth()->user()->isManager() || auth()->user()->isAdmin()))
+            <li class="nav-item">
+              <a href="{{ route('lfm.claims.index') }}" class="nav-link {{ request()->is('lfm/claims*') ? 'active' : '' }}">
+                <i class="nav-icon bi bi-check-circle"></i>
+                <p>Verify Claims</p>
+              </a>
+            </li>
+          @endif
         @endif
 
         {{-- Regular Users --}}
