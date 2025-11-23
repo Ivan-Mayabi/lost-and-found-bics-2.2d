@@ -1,8 +1,50 @@
-/*
+/* 
  * ============================================
- * campus-theme.css - Centralized Theme Overrides (Enhanced)
+ * campus-theme.css - Centralized Theme Overrides (Polished)
  * ============================================
  */
+
+/* ============================
+   Sign-Up Page Only Custom Styles
+============================ */
+
+/* Scope styles to only the Sign-Up page container */
+body.admin-signup-page .card-body input {
+    border-color: var(--theme-pink-primary);
+}
+
+/* Autofill dropdown color (Chrome/Safari) */
+body.admin-signup-page .card-body input:-webkit-autofill {
+    background-color: #f9d5d3 !important; /* soft pink background for autocomplete */
+    -webkit-text-fill-color: #333 !important;
+}
+
+/* Firefox Autofill */
+body.admin-signup-page .card-body input:-moz-autofill {
+    background-color: #f9d5d3 !important;
+    color: #333 !important;
+}
+
+/* Focus/hover state for inputs */
+body.admin-signup-page .card-body input:focus {
+    border-color: var(--theme-pink-darker);
+    box-shadow: 0 0 0 0.2rem rgba(192, 57, 95, 0.25);
+}
+
+/* Sign-Up button cohesion */
+body.admin-signup-page .btn-primary {
+    background-color: var(--theme-pink-darker) !important;
+    border-color: var(--theme-pink-darker) !important;
+    transition: all 0.3s ease;
+}
+
+body.admin-signup-page .btn-primary:hover {
+    background-color: var(--theme-hover-alt) !important;
+    border-color: var(--theme-hover-alt) !important;
+    color: var(--theme-pink-primary) !important;
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
 
 /* ============================
    1. GLOBAL CSS VARIABLES
@@ -48,7 +90,7 @@ body {
     background-color: var(--theme-pink-primary) !important;
     border: none !important;
     box-shadow: none !important;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 /* Sidebar Brand */
@@ -76,7 +118,7 @@ body {
 .app-wrapper .app-sidebar .nav-link.active {
     background-color: var(--theme-hover-alt) !important;
     color: var(--theme-pink-primary) !important;
-    transform: translateX(5px);
+    transform: translateX(2px);
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 

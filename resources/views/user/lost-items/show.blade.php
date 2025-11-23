@@ -12,6 +12,12 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="bg-red-200 text-red-800 px-4 py-2 rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="bg-white shadow rounded p-6 d-flex justify-content-evenly">
         <div>
             <div class="mb-4">
@@ -49,8 +55,9 @@
 
         {{-- Claim Button --}}
         @if(!$itemLost->taken)
-            <form action="{{ route('user.claims.store', $itemLost->id) }}" method="POST" class="mt-4">
+            <form action="{{ route('user.claims.store') }}" method="POST" class="mt-4">
                 @csrf
+                <input type="hidden" name="lost_item_id" value="{{ $itemLost->id }}">
                 <button type="submit" 
                         class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
                     Claim Item
