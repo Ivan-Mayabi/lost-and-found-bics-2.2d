@@ -22,7 +22,6 @@ class IdReplacement extends Model
     ];
 
     protected $casts = [
-        'approved' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'approved_at' => 'datetime',
