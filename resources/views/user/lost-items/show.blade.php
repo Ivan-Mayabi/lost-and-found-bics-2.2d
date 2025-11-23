@@ -18,40 +18,38 @@
         </div>
     @endif
 
-    <div class="bg-white shadow rounded p-6 d-flex justify-content-evenly">
-        <div>
-            <div class="mb-4">
-                <strong>Description:</strong>
-                <p>{{ $itemLost->description }}</p>
-            </div>
-
-            <div class="mb-4">
-                <strong>Date Lost:</strong>
-                <p>{{ $itemLost->date_lost }}</p>
-            </div>
-
-            <div class="mb-4">
-                <strong>Place Lost:</strong>
-                <p>{{ $itemLost->place_lost ?? 'N/A' }}</p>
-            </div>
-
-            <div class="mb-4">
-                <strong>Associated Item:</strong>
-                <p>{{ $itemLost->item ? $itemLost->item->name : 'Not linked' }}</p>
-            </div>
-
-            <div class="mb-4">
-                <strong>Status:</strong>
-                <p>{{ $itemLost->taken ? 'Taken' : 'Not taken' }}</p>
-            </div>
+    <div class="bg-white shadow rounded p-6">
+        <div class="mb-4">
+            <strong>Description:</strong>
+            <p>{{ $itemLost->description }}</p>
         </div>
-        
-        <div>
+
+        <div class="mb-4">
+            <strong>Date Lost:</strong>
+            <p>{{ $itemLost->date_lost }}</p>
+        </div>
+
+        <div class="mb-4">
+            <strong>Place Lost:</strong>
+            <p>{{ $itemLost->place_lost ?? 'N/A' }}</p>
+        </div>
+
+        <div class="mb-4">
+            <strong>Associated Item:</strong>
+            <p>{{ $itemLost->item ? $itemLost->item->name : 'Not linked' }}</p>
+        </div>
+
+        <div class="mb-4">
+            <strong>Status:</strong>
+            <p>{{ $itemLost->taken ? 'Taken' : 'Not taken' }}</p>
+        </div>
+
+        @if($itemLost->image_url)
             <div class="mb-4">
-                {{-- <strong>Image:</strong> --}}
-                <img src="{{ preg_match('/^https:\/\/via\.placeholder\.com\/640x480\.png\/?/',$itemLost->image_url)==1 || !isset($itemLost->image_url)  ? asset('favicon.png') : asset('storage/' .$itemLost->image_url) }}" alt="Lost item image" class="h-auto w-50 rounded shadow">
+                <strong>Image:</strong>
+                <img src="{{ asset('storage/' . $itemLost->image_url) }}" alt="Lost item image" class="w-64 h-auto rounded shadow">
             </div>
-        <div>
+        @endif
 
         {{-- Claim Button --}}
         @if(!$itemLost->taken)
