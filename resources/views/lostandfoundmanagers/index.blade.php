@@ -96,7 +96,7 @@
     <tr>
         <td>{{ $lost->id }}</td>
         <td class="w-25">
-            <img class="w-50" src="{{ preg_match('/^https:\/\/via\.placeholder\.com\/640x480\.png\/?/',$lost->image_url) == 1 ? asset('favicon.png')  :  asset('storage/'.$lost->image->url) }}" alt="Lost Image" width="100vh">
+            <img class="w-50" src="{{ preg_match('/^https:\/\/via\.placeholder\.com\/640x480\.png\/?/',$lost->image_url) == 1 ? asset('favicon.png')  :  asset('storage/'.$lost->image_url) }}" alt="Lost Image" width="100vh">
         </td>
         <td>{{ $lost->item->name ?? 'N/A' }}</td>
         <td>{{ $lost->date_lost }}</td>

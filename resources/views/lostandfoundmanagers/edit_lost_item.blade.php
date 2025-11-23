@@ -8,7 +8,7 @@
     <h4>Edit Lost Item</h4>
   </div>
   <div class="card-body">
-    <form method="POST" action="{{ route('lfm.lostitems.update', $lostItem->id) }}">
+    <form method="POST" action="{{ route('lfm.lostitems.update', $lostItem->id) }}" enctype="multipart/form-data">
       @csrf
       @method('PUT')
 
@@ -25,7 +25,7 @@
 
       <div class="form-group mb-3">
         <label for="date_lost">Date Lost</label>
-        <input type="date" name="date_lost" class="form-control" value="{{ old('date_lost', $lostItem->date_lost) }}" required>
+        <input type="datetime-local" name="date_lost" class="form-control" value="{{ old('date_lost', $lostItem->date_lost) }}" required>
       </div>
 
       <div class="form-group mb-3">
@@ -40,7 +40,7 @@
 
       <div class="form-group mb-3">
         <label for="image_url">Image URL</label>
-        <input type="url" name="image_url" class="form-control" value="{{ old('image_url', $lostItem->image_url) }}">
+        <input type="file" name="image_url" class="form-control" value="{{ old('image_url', $lostItem->image_url) }}">
       </div>
 
       <button type="submit" class="btn btn-primary">Update Lost Item</button>

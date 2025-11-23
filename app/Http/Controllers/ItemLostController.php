@@ -73,10 +73,10 @@ class ItemLostController extends Controller
     /**
      * Show the form for editing the specified lost item.
      */
-    public function edit(ItemLost $itemLost)
-    {
-        return view('user.lost-items.edit', compact('itemLost'));
-    }
+    // public function edit(ItemLost $itemLost)
+    // {
+    //     return view('user.lost-items.edit', compact('itemLost'));
+    // }
 
     /**
      * Update the specified lost item in storage.

@@ -160,10 +160,13 @@ public function updateLostItem(Request $request, $id)
         'date_lost' => 'required|date_format:Y-m-d\TH:i',
         'place_lost' => 'required|string|max:255',
         'description' => 'nullable|string',
-        'image_url' => 'nullable|url'
+        'image_url' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
     ]);
 
-    $lostItem->update($request->only('item_id', 'date_lost', 'place_lost', 'description', 'image_url'));
+    $lostItem->update($request->only('item_id', 'date_lost', 'place_lost', 'description'));
+    $lostItem->image_url = $request->file('image_url')->store('items/lost/'.$lostItem->id,'public');
+
+    $lostItem->save();
 
     return redirect()->route('lfm.dashboard')->with('success', 'Lost item updated successfully!');
 }
