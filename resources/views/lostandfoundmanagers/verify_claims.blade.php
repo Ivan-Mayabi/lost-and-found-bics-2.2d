@@ -20,6 +20,7 @@
                             <th>Claim ID</th>
                             <th>Item</th>
                             <th>Claimant</th>
+                            <th>Status</th>
                             <th>Date Claimed</th>
                             <th>Action</th>
                         </tr>
@@ -30,15 +31,25 @@
                             <td>{{ $claim->id }}</td>
                             <td>{{ $claim->item_lost->item->name ?? 'N/A' }}</td>
                             <td>{{ $claim->user->name ?? 'N/A' }}</td>
+                            <td>
+                                @if($claim->verified==1)
+                                    <span class="badge bg-success">Verified</span>
+                                @elseif($claim->verified==0)
+                                    <span class="badge bg-danger">Not Verified</span>
+                                @else
+                                    <span class="badge bg-warning text-black">Pending</span>
+                                @endif
+                            </td>
                             <td>{{ $claim->created_at->format('Y-m-d') }}</td>
                             <td>
-                                <form action="{{ route('lfm.claims.approve', $claim->id) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                        <i class="bi-icons bi-check-circle"></i> Approve
-                                    </button>
-                                </form>
-
+                                @if($claim->verified==0 && auth()->user()->isAdmin())
+                                    <form action="{{ route('lfm.claims.approve', $claim->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="bi-icons bi-check-circle"></i> Approve
+                                        </button>
+                                    </form>
+                                @elseif($claim->verified==1 && auth()->user()->isAdmin())
                                 <form action="{{ route('lfm.claims.reject', $claim->id) }}" method="POST" style="display:inline-block;">
                                     @csrf
                                     @method('DELETE')
@@ -46,11 +57,27 @@
                                         <i class="bi-icons bi-x-circle"></i> Reject
                                     </button>
                                 </form>
+                                @else
+                                    <form action="{{ route('lfm.claims.approve', $claim->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="bi-icons bi-check-circle"></i> Approve
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('lfm.claims.reject', $claim->id) }}" method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="bi-icons bi-x-circle"></i> Reject
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+                {{ $claims->links('pagination::bootstrap-5') }}
             @else
                 <p>No pending claims at the moment.</p>
             @endif

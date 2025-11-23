@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\ItemClaimed;
 use App\Models\ItemLost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LostAndFoundManagerController extends Controller
 {
@@ -70,7 +71,12 @@ class LostAndFoundManagerController extends Controller
 
     public function verifyClaims() //verify claims
     {
-        $claims = ItemClaimed::where('verified',false)->paginate(env('PAGINATION_COUNT',10));
+        if(Auth::user()->isAdmin()){
+            $claims = ItemClaimed::paginate(env('PAGINATION_COUNT',10));
+        }
+        else{
+            $claims = ItemClaimed::where('verified','=',0)->paginate(env('PAGINATION_COUNT',10));
+        }
         return view('lostandfoundmanagers.verify_claims',compact('claims'));
     }
 
