@@ -1,6 +1,7 @@
 @extends('layout.managers')
 
 @section('title', 'Verify Claims')
+@section('page-title', 'Verify Claims')
 
 @section('content')
     @if (session('success'))

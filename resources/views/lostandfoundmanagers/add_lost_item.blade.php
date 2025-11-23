@@ -1,6 +1,7 @@
 @extends('layout.managers')
 
 @section('title', 'Add Lost Item')
+@section('page-title', 'Add Lost Item')
 
 @section('content')
     @if ($errors->any())

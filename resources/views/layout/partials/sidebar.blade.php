@@ -33,7 +33,7 @@
         {{-- Dashboard --}}
         @if(auth()->user()->isAdmin() || auth()->user()->isManager())
         <li class="nav-item">
-          <a href="{{ URL::to('/') }}" class="nav-link {{ request()->is('/') ? 'active' : "" }}">
+          <a href="{{ route('lfm.dashboard') }}" class="nav-link {{ request()->is('/') ? 'active' : "" }}">
             <i class="nav-icon bi bi-speedometer"></i>
             <p>Dashboard</p>
           </a>
@@ -68,7 +68,7 @@
           <li class="nav-item">
             <a href="{{ route('lfm.items.create') }}" class="nav-link {{ request()->is('lfm/items/create') ? 'active' : '' }}">
               <i class="nav-icon bi bi-plus-circle"></i>
-              <p>Add Found Item</p>
+              <p>Add Items</p>
             </a>
           </li>
 
@@ -131,14 +131,14 @@
           </li>
         @endif
 
-        {{-- Settings --}}
+        {{-- Settings
         <li class="nav-header">Settings</li>
         <li class="nav-item">
           <a href="{{ url::to('/') }}" class="nav-link {{ request()->is('settings*') ? 'active' : "" }}">
             <i class="nav-icon bi bi-gear"></i>
             <p>System Settings</p>
           </a>
-        </li>
+        </li> --}}
 
       </ul>
       <!--end::Sidebar Menu-->

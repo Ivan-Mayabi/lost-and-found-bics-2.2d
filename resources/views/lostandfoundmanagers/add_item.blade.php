@@ -2,6 +2,7 @@
 @extends('layout.managers')
 
 @section('title', 'Add Item')
+@section('page-title', 'Add Item')
 
 @section('content')
     @if ($errors->any())
