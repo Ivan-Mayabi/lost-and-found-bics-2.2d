@@ -6,6 +6,7 @@ use App\Http\Requests\StoreIdReplacementRequest;
 use App\Http\Requests\UpdateIdReplacementRequest;
 use App\Models\IdReplacement;
 use App\Models\Payment;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class IdReplacementController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      * API/JSON response (Ivan)
@@ -38,7 +40,7 @@ class IdReplacementController extends Controller
      */
     public function indexView()
     {
-        $idReplacements = IdReplacement::where('user_id', auth()->id())->latest()->get();
+        $idReplacements = IdReplacement::where('user_id', Auth::id())->latest()->get();
         return view('user.temporary-ids.index', compact('idReplacements'));
     }
 
@@ -87,7 +89,7 @@ class IdReplacementController extends Controller
             ]);
 
             IdReplacement::create([
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'id_lost' => $request->id_lost,
                 'payment_id' => $request->payment_id,
                 'approved' => false,
@@ -106,8 +108,8 @@ class IdReplacementController extends Controller
         $this->authorize('view', $idReplacement);
 
         // Blade view for regular users
-        if (!Auth::user()->hasRole('admin')) {
-            if ($idReplacement->user_id !== auth()->id()) {
+        if (!Auth::user()->isAdmin()) {
+            if ($idReplacement->user_id !== Auth::id()) {
                 abort(403);
             }
             return view('user.temporary-ids.show', compact('idReplacement'));
