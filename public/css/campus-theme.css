@@ -1,0 +1,144 @@
+/* ============================
+   Fonts
+============================ */
+.waterfall-regular {
+    font-family: "Waterfall", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Source Sans 3', sans-serif;
+    background-color: #f9f5f4; /* very soft beige background */
+}
+
+/* ============================
+   Sidebar
+============================ */
+.main-sidebar {
+    background-color: #b3395b !important; /* primary pink */
+}
+
+.main-sidebar .nav-link {
+    color: #fff !important;
+}
+
+.main-sidebar .nav-link:hover,
+.main-sidebar .nav-link.active {
+    background-color: #c0395f !important; /* darker pink on hover/active */
+    color: #fff !important;
+}
+
+.main-sidebar .nav-header {
+    color: #fff !important;
+    opacity: 0.9;
+}
+
+/* ============================
+   Top Navbar
+============================ */
+.navbar {
+    background-color: #c0395f !important;
+}
+
+.navbar .nav-link,
+.navbar .navbar-brand {
+    color: #fff !important;
+}
+
+/* ============================
+   Cards
+============================ */
+.card {
+    background-color: #fff !important; /* clean white cards */
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    margin-bottom: 1.5rem;
+}
+
+/* ============================
+   Tables
+============================ */
+.table,
+.card table {
+    background-color: #fff8e7 !important; /* soft beige table background */
+    color: #333 !important;
+    border-radius: 8px !important;
+}
+
+.table thead {
+    background-color: #b3395b !important; /* pink header */
+    color: #fff !important;
+}
+
+.table tbody tr:hover {
+    background-color: #f9d5d3 !important; /* soft hover pink */
+}
+
+/* ============================
+   Buttons
+============================ */
+.btn-primary,
+.btn-approve {
+    background-color: #c0395f !important;
+    border-color: #c0395f !important;
+    color: #fff !important;
+}
+
+.btn-primary:hover,
+.btn-approve:hover {
+    background-color: #b3395b !important;
+    border-color: #b3395b !important;
+}
+
+.btn-danger,
+.btn-reject {
+    background-color: #ff6b6b !important;
+    border-color: #ff6b6b !important;
+    color: #fff !important;
+}
+
+.btn-danger:hover,
+.btn-reject:hover {
+    background-color: #ff4c4c !important;
+    border-color: #ff4c4c !important;
+}
+
+/* ============================
+   Alerts / Flash Messages
+============================ */
+.alert-success {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+    border-radius: 8px !important;
+}
+
+.alert-danger {
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+    border-radius: 8px !important;
+}
+
+/* ============================
+   Forms
+============================ */
+.form-control {
+    border-radius: 8px !important;
+    border: 1px solid #ccc !important;
+}
+
+/* ============================
+   Misc
+============================ */
+.breadcrumb {
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+    color: #333;
+}
+
+.card-header {
+    background-color: #f3e6e6 !important;
+    font-weight: 600;
+    color: #b3395b !important;
+}

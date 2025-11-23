@@ -58,6 +58,14 @@ class IdReplacementController extends Controller
      */
     public function store(Request $request)
     {
+
+        if($request->payment_id){
+            $payment_token = Payment::find($request->payment_id);
+            if($request->payment_token !== $payment_token->payment_id_token){
+                return redirect()->route('user.temporary-ids.index')
+                             ->with('error', 'Temporary ID request failed, wrong payment token.');
+            }
+        }
         if ($request instanceof StoreIdReplacementRequest) {
             // Ivan's API logic
             $this->authorize('create', IdReplacement::class);

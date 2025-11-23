@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemLostController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\IdReplacementController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 // --------------------
@@ -31,8 +32,16 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
 
+    // --------------------
+    // Payment Routes
+    // --------------------
+    Route::resource('payments',PaymentController::class);
+    Route::post('payments/{payment}/approve',[PaymentController::class,'approve'])->name('payments.approve');
+    Route::post('payments/{payment}/reject',[PaymentController::class,'reject'])->name('payments.reject');
+
     Route::post('users/{user}/reset-password', [UserController::class, 'reset_password'])->name('users.reset-password');
     Route::post('users/{user}/deactivate', [UserController::class, 'deactivate'])->name('users.deactivate');
+    
 
     // --------------------
     // Lost & Found Manager Routes

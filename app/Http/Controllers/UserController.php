@@ -209,17 +209,17 @@ class UserController extends Controller
         return view('id-approvers.approver',compact('replacements'));
     }
 
-    public function approve_id_replacement(IdReplacement $idReplacement){
-        //idReplacement approval logic
-        $idReplacement->approved = 1;
-        $idReplacement->save();
+    public function approve_id_replacement(IdReplacement $replacement_id){
+        //replacement_id approval logic
+        $replacement_id->approved = 1;
+        $replacement_id->save();
         return redirect()->back()->with('success','ID Replacement Approved Successfully');
     }
 
-    public function reject_id_replacement(IdReplacement $idReplacement){
-        //idReplacement rejection logic
-        $idReplacement->approved = 0;
-        $idReplacement->save();
+    public function reject_id_replacement(IdReplacement $replacement_id){
+        //replacement_id rejection logic
+        $replacement_id->approved = 0;
+        $replacement_id->save();
         return redirect()->back()->with('success','ID Replacement Rejected Successfully');
     }
 }

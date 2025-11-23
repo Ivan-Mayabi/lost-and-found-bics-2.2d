@@ -15,7 +15,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    @if(count($claims)==0)
+    @if(count($claims)<1)
         <p>You haven't claimed any items yet.</p>
     @else
         <table class="table table-bordered">
@@ -43,7 +43,7 @@
                     @if($claim->lostItem->taken == 0)
                         <td><span class="badge bg-warning text-black">Not yet Taken</span></td>
                     @else
-                        <td><span class="badge bg-success">{{$claim->lostItem->date_taken->format('d M Y')}}</span></td>
+                        <td><span class="badge bg-success">{{ date('d M Y', strtotime($claim->lostItem->date_taken))}}</span></td>
                     @endif
                     <td>{{ $claim->created_at->format('d M Y') }}</td>
                 </tr>

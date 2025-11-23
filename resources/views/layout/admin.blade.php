@@ -45,6 +45,8 @@
     
     <!--begin::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="{{ asset('adminlte/css/adminlte.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/campus-theme.css') }}">
+
     <!--end::Required Plugin(AdminLTE)-->
     <style>
       .waterfall-regular {
