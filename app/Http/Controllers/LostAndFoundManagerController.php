@@ -82,7 +82,7 @@ class LostAndFoundManagerController extends Controller
             $claims = ItemClaimed::paginate(env('PAGINATION_COUNT',10));
         }
         else{
-            $claims = ItemClaimed::where('verified','=',0)->paginate(env('PAGINATION_COUNT',10));
+            $claims = ItemClaimed::where('verified','=',2)->paginate(env('PAGINATION_COUNT',10));
         }
         return view('lostandfoundmanagers.verify_claims',compact('claims'));
     }
@@ -90,7 +90,7 @@ class LostAndFoundManagerController extends Controller
     public function approveClaim($id) //approve claim
     {
         $claim = ItemClaimed::findOrFail($id);
-        $claim->delete();
+        $claim->verified=1;
         return redirect()->back()->with('success','Claim approved');
     }
 
@@ -104,6 +104,7 @@ class LostAndFoundManagerController extends Controller
     // $claim->status = 'rejected';
     // $claim->save();
 
+    $claim->verified=0;
     // Or simply delete it:
     $claim->save();
 
