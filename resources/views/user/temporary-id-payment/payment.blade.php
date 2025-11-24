@@ -37,8 +37,8 @@
         <input type="text" class="form-control" id="phone_number" name="phone_number" required>
     </div>
     <div class="mb-3">
-        <label for="payment_id" class="form-label">Amount</label>
-        <input type="text" class="form-control" id="payment_id" name="payment_id" placeholder="Enter numbers only" required>
+        <label for="amount" class="form-label">Amount</label>
+        <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter numbers only" required>
     </div>
     <button type="submit" class="btn btn-success">Add</button>
     <a href="{{ route('user.temporary-ids.index') }}" class="btn btn-secondary">Back</a>
