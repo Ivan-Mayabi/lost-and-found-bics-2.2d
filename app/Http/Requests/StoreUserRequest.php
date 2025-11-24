@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\TwoNames;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,7 +24,7 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=> ['required','max:40'],
+            'name'=> ['required','max:40',new TwoNames()],
             'email'=>['required','unique:users'],
             'role'=>['integer'],
         ];
