@@ -13,10 +13,6 @@ return new class extends Migration
             if (!Schema::hasColumn('items_claimed', 'user_id')) {
                 $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             }
-
-            if (!Schema::hasColumn('items_claimed', 'lost_item_id')) {
-                $table->foreignId('lost_item_id')->constrained('items_lost')->onDelete('cascade');
-            }
         });
     }
 
@@ -26,11 +22,6 @@ return new class extends Migration
             if (Schema::hasColumn('items_claimed', 'user_id')) {
                 $table->dropForeign(['user_id']);
                 $table->dropColumn('user_id');
-            }
-
-            if (Schema::hasColumn('items_claimed', 'lost_item_id')) {
-                $table->dropForeign(['lost_item_id']);
-                $table->dropColumn('lost_item_id');
             }
         });
     }

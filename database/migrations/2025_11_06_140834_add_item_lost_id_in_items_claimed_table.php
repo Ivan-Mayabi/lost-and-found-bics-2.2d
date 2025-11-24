@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::table('items_claimed', function (Blueprint $table) {
             // Only add the lost_item_id column if it does not exist
             if (!Schema::hasColumn('items_claimed', 'lost_item_id')) {
-                $table->foreignId('lost_item_id')->constrained('items_lost')->onDelete('cascade');
+                $table->foreignId('item_lost_id')->constrained('items_lost')->onDelete('cascade');
             }
         });
     }

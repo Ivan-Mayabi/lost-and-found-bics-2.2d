@@ -44,7 +44,7 @@
             <p>{{ $itemLost->taken ? 'Taken' : 'Not taken' }}</p>
         </div>
 
-        @if($itemLost->image_url)
+        @if(isset($itemLost->image_url))
             <div class="mb-4">
                 <strong>Image:</strong>
                 <img src="{{ asset('storage/' . $itemLost->image_url) }}" alt="Lost item image" class="w-64 h-auto rounded shadow">
@@ -55,7 +55,7 @@
 @if(!$itemLost->taken)
     <form action="{{ route('user.claims.store') }}" method="POST" class="mt-4">
         @csrf
-        <input type="hidden" name="lost_item_id" value="{{ $itemLost->id }}">
+        <input type="hidden" name="item_lost_id" value="{{ $itemLost->id }}">
         <button type="submit" 
                 class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
             Claim Item

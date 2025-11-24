@@ -93,7 +93,7 @@
                         </thead>
                         <tbody>
     @foreach($lostItems as $lost)
-    <tr>
+    <tr style={{ $lost->student_added == 1 ? "bacground-color:#c84b61" : ""  }}>
         <td>{{ $lost->id }}</td>
         <td class="w-25">
             <img class="w-50" src="{{ preg_match('/^https:\/\/via\.placeholder\.com\/640x480\.png\/?/',$lost->image_url) == 1 ? asset('favicon.png')  :  asset('storage/'.$lost->image_url) }}" alt="Lost Image" width="100vh">

@@ -43,14 +43,14 @@ class ClaimController extends Controller
     public function store(StoreClaimRequest $request)
     {
         $request->validate([
-            'lost_item_id' => 'required|exists:items_lost,id',
+            'item_lost_id' => 'required|exists:items_lost,id',
         ]);
 
-        Claim::create([
-            'user_id' => Auth::id(),
-            'lost_item_id' => $request->lost_item_id,
-            'verified' => false,
-        ]);
+        $claim = new Claim();
+        $claim->user_id = Auth::id();
+        $claim->item_lost_id=$request->item_lost_id;
+        $claim->verified=2;
+        $claim->save();
 
         return redirect()->route('user.claims.index')
                          ->with('success', 'Claim submitted successfully!');

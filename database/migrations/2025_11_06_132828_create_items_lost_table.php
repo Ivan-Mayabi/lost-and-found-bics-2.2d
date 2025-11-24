@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('date_lost');
             $table->string('description')->nullable()->default(null);
+            $table->boolean('student_added')->default(0);
             $table->string('place_lost');
             $table->string('image_url')->nullable()->default(null);
             $table->boolean('taken')->nullable()->default(0);
