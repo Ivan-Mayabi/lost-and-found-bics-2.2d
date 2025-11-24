@@ -15,17 +15,13 @@ use Illuminate\Support\Facades\Auth;
 class IdReplacementController extends Controller
 {
     use AuthorizesRequests;
-    /**
-     * Display a listing of the resource.
-     * API/JSON response (Ivan)
-     */
+
     public function index()
     {
         $this->authorize('viewAny', IdReplacement::class);
 
         $query = IdReplacement::with(['user', 'payment']);
 
-        // Regular users can only see their own requests
         if (Auth::user()->hasRole('student')) {
             $query->where('user_id', Auth::id());
         }
@@ -35,44 +31,34 @@ class IdReplacementController extends Controller
         ]);
     }
 
-    /**
-     * Show all temporary IDs for a logged-in student (Blade view)
-     */
     public function indexView()
     {
-        if(Auth::user()->isAdmin()){
+        if (Auth::user()->isAdmin()) {
             $idReplacements = IdReplacement::paginate(env('DEFAULT_PAGINATE_NUMBER',10));
-        }
-        else{
+        } else {
             $idReplacements = IdReplacement::where('user_id', Auth::id())->latest()->get();
         }
-            return view('user.temporary-ids.index', compact('idReplacements'));
+
+        return view('user.temporary-ids.index', compact('idReplacements'));
     }
 
-    /**
-     * Show form to create a new request (Blade view)
-     */
     public function create()
     {
         return view('user.temporary-ids.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * Handles both API (Ivan) and Blade form submission
-     */
     public function store(Request $request)
     {
-
-        if($request->payment_id){
+        if ($request->payment_id) {
             $payment_token = Payment::find($request->payment_id);
-            if($request->payment_token !== $payment_token->payment_id_token){
+            if ($request->payment_token !== $payment_token->payment_id_token) {
                 return redirect()->route('user.temporary-ids.index')
-                             ->with('error', 'Temporary ID request failed, wrong payment token.');
+                                ->with('error', 'Temporary ID request failed, wrong payment token.');
             }
         }
+
         if ($request instanceof StoreIdReplacementRequest) {
-            // Ivan's API logic
+
             $this->authorize('create', IdReplacement::class);
 
             $payment = Payment::findOrFail($request->payment_id);
@@ -94,8 +80,9 @@ class IdReplacementController extends Controller
                 'message' => 'ID replacement request submitted successfully',
                 'data' => $idReplacement->load('user', 'payment')
             ], Response::HTTP_CREATED);
+
         } else {
-            // Blade form submission logic (your current code)
+
             $request->validate([
                 'id_lost' => 'required|string|max:50',
                 'payment_id' => 'required|integer',
@@ -113,14 +100,10 @@ class IdReplacementController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource (JSON/API)
-     */
     public function show(IdReplacement $idReplacement)
     {
         $this->authorize('view', $idReplacement);
 
-        // Blade view for regular users
         if (!Auth::user()->isAdmin()) {
             if ($idReplacement->user_id !== Auth::id()) {
                 abort(403);
@@ -128,15 +111,11 @@ class IdReplacementController extends Controller
             return view('user.temporary-ids.show', compact('idReplacement'));
         }
 
-        // API response for admins
         return response()->json([
             'data' => $idReplacement->load(['user', 'payment'])
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateIdReplacementRequest $request, IdReplacement $idReplacement)
     {
         $this->authorize('update', $idReplacement);
@@ -159,9 +138,6 @@ class IdReplacementController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(IdReplacement $idReplacement)
     {
         $this->authorize('delete', $idReplacement);
@@ -173,53 +149,72 @@ class IdReplacementController extends Controller
         ]);
     }
 
+
     /**
-     * Approve an ID replacement request
+     * APPROVE
      */
-    public function approve(IdReplacement $idReplacement): JsonResponse
+    public function approve(Request $request, IdReplacement $idReplacement)
     {
         $this->authorize('update', $idReplacement);
 
-        if ($idReplacement->isApproved()) {
-            return response()->json([
-                'message' => 'ID replacement request is already approved'
-            ], Response::HTTP_BAD_REQUEST);
+        if ($idReplacement->approved == 1) {
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'ID replacement request is already approved'
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            return redirect()->back()->with('error', 'This request is already approved.');
         }
 
+        // Only update the existing column
         $idReplacement->update([
-            'approved' => true,
-            'approved_by' => Auth::id(),
-            'approved_at' => now(),
+            'approved' => 1,
         ]);
 
-        return response()->json([
-            'message' => 'ID replacement request approved successfully',
-            'data' => $idReplacement->load(['user', 'payment'])
-        ]);
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'ID replacement request approved successfully',
+                'data' => $idReplacement->load(['user', 'payment'])
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'ID replacement request approved successfully.');
     }
 
+
     /**
-     * Reject an ID replacement request
+     * REJECT
+     * (We only flip approved → 0 because no reject columns exist)
      */
-    public function reject(IdReplacement $idReplacement): JsonResponse
+    public function reject(Request $request, IdReplacement $idReplacement)
     {
         $this->authorize('update', $idReplacement);
 
-        if ($idReplacement->isApproved()) {
-            return response()->json([
-                'message' => 'Cannot reject an approved ID replacement request'
-            ], Response::HTTP_BAD_REQUEST);
+        if ($idReplacement->approved == 1) {
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Cannot reject an approved ID replacement request'
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            return redirect()->back()->with('error', 'You cannot reject an already approved request.');
         }
 
+        // Set approved = 0 (unverified)
         $idReplacement->update([
-            'rejected_by' => Auth::id(),
-            'rejected_at' => now(),
-            'rejection_reason' => request('reason', 'No reason provided'),
+            'approved' => 0,
         ]);
 
-        return response()->json([
-            'message' => 'ID replacement request rejected successfully',
-            'data' => $idReplacement->load(['user', 'payment'])
-        ]);
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'ID replacement request rejected successfully',
+                'data' => $idReplacement->load(['user', 'payment'])
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'ID replacement request rejected successfully.');
     }
 }

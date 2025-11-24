@@ -105,7 +105,8 @@ Route::middleware('auth')->group(function () {
     // ID Approver routes
     // -------------------------------
     Route::get('/id-approver',[UserController::class,'request_id_replacement'])->name('users.request-id-replacement');
-    Route::post('/id-approver/{replacement_id}/approve', [IdReplacementController::class, 'approve'])->name('id-replacements.approve');
-    Route::post('/id-approver/{replacement_id}/reject',[IdReplacementController::class,'reject'])->name('id-replacements.reject');
+Route::post('/id-approver/{idReplacement}/approve', [IdReplacementController::class, 'approve'])->name('id-replacements.approve');
+Route::post('/id-approver/{idReplacement}/reject', [IdReplacementController::class, 'reject'])->name('id-replacements.reject');
+
 
 });
