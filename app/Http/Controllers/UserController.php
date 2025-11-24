@@ -202,24 +202,27 @@ class UserController extends Controller
     ]);
 
     $credentials = $request->only(['email','password']);
+    $credentials['active'] = 1; // Only allow active users to log in
 
-    if(Auth::attempt($credentials)){
+    if (Auth::attempt($credentials)) {
         /** @var \App\Models\User $user */
         $user = Auth::user();
-
         if ($user->isManager()) {
             return redirect()->route('lfm.dashboard'); // send managers to their dashboard
         } else if ($user->isAdmin()) {
             return redirect()->route('users.index'); // admin goes to users page
         } else if ($user->isApprover()) {
             return redirect()->route('users.request-id-replacement'); // approver goes to approvals page
-        }
-         else {
+        } else {
             return redirect()->route('user.lost-items.index'); // regular user
-        } 
-
+        }
     } else {
-        return redirect()->route('login')->withErrors('general','Could not Log In, Wrong Username or Password');
+        // Check if user exists but is inactive
+        $user = User::where('email', $request->email)->first();
+        if ($user && $user->active != 1) {
+            return redirect()->route('login')->withErrors(['general' => 'Your account is not active. You are not allowed to log in.']);
+        }
+        return redirect()->route('login')->withErrors(['general' => 'Could not Log In, Wrong Username or Password']);
     }
 }
 
