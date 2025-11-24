@@ -1,59 +1,84 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏛️ Database Schema Reference (Laravel Application -> Lost and Found, No Tears in 2.2)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 📊 Entity Relationship Diagram (Mermaid - Optimized for Clarity)
 
-## About Laravel
+```mermaid
+erDiagram
+    %% Core Entities (Ordered for cleaner layout)
+    roles ||--o{ users : "has"
+    items ||--o{ items_lost : "has lost record"
+    payments ||--o{ id_replacements : "funds"
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+    %% User & Related
+    roles {
+        bigint id PK
+        varchar type "Admin, Regular, ID Replacement Approvers, L&F Managers"
+        timestamp created_at
+        timestamp updated_at
+    }
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+    users {
+        bigint id PK
+        bigint role_id FK "Foreign Key to roles"
+        varchar name
+        varchar email UK
+        varchar password
+        boolean active
+        varchar user_image_url
+        timestamp created_at
+        timestamp updated_at
+    }
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    %% Lost & Found Flow
+    items {
+        bigint id PK
+        varchar name
+        varchar type
+        text description
+    }
 
-## Learning Laravel
+    items_lost {
+        bigint id PK
+        bigint item_id FK "Foreign Key to items"
+        tinyint student_added "Record if a student or manager added the item"
+        date date_lost
+        varchar place_lost
+        boolean taken "Nullable, Default: 0"
+        date date_taken
+        int user_taken_id "User who recorded item as taken (not FK)"
+        varchar image_url
+        timestamp created_at
+        timestamp updated_at
+    }
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+    items_claimed {
+        bigint id PK
+        bigint user_id FK "Foreign Key to users (claimer)"
+        bigint item_lost_id FK "Foreign Key to items_lost"
+        tinyint verified "0->Unverified,1->Verified,2->Pending"
+        timestamp created_at
+        timestamp updated_at
+    }
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    %% ID Replacement Flow
+    payments {
+        bigint id PK
+        varchar method "Cash, Mpesa"
+        int amount
+        tinyint verified "0->Unverified,1->Verified,2->Pending"
+    }
 
-## Laravel Sponsors
+    id_replacements {
+        bigint id PK
+        bigint user_id FK "Foreign Key to users (requester)"
+        bigint payment_id FK "Foreign Key to payments"
+        varchar id_lost "Reference/ID of the lost item"
+        tinyint approved  "0->Unverified,1->Verified,2->Pending"
+        timestamp created_at
+        timestamp updated_at
+    }
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    %% Define Cross-Group Relationships explicitly after grouping for clarity
+    users ||--o{ items_claimed : claims
+    users ||--o{ id_replacements : requests
+    items_lost ||--o{ items_claimed : "claimed record"
