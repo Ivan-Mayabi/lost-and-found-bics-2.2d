@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::post('users/{user}/reset-password', [UserController::class, 'reset_password'])->name('users.reset-password');
     Route::post('users/{user}/deactivate', [UserController::class, 'deactivate'])->name('users.deactivate');
     
+    // Taking Items
+        Route::post('lost-and-found-manager/take/{id}',[LostAndFoundManagerController::class, 'take'])->name('take');
 
     // --------------------
     // Lost & Found Manager Routes

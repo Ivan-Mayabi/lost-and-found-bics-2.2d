@@ -16,7 +16,7 @@ class Claim extends Model
 
     protected $fillable = [
         'user_id',
-        'lost_item_id',
+        'item_lost_id',
         'verified'
     ];
 

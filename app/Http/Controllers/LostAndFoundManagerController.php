@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Claim;
 use App\Models\Item;
 use App\Models\ItemClaimed;
 use App\Models\ItemLost;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -189,6 +191,22 @@ public function deleteLostItem($id)
     return redirect()->route('lfm.dashboard')->with('success', 'Lost item deleted successfully!');
 }
 
+public function take($id)
+{
+    $lostItem = ItemLost::findOrFail($id);
+    $lostItem->taken = 1;
+    $verified_user = Claim::where('item_lost_id','=',$lostItem->id)
+                            ->where('verified','=',1)
+                            ->value('user_id');
+    if (is_null($verified_user)) {
+        return redirect()->route('lfm.dashboard')
+                         ->with('error', 'Lost item cannot be taken: No verified claim found.');
+    }
+    $lostItem->user_taken_id = $verified_user;
+    $lostItem->date_taken = now();
+    $lostItem->save();
+    return redirect()->route('lfm.dashboard')->with('success', 'Lost item taken successfully!');
+}
     
 
 }   

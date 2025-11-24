@@ -19,7 +19,7 @@
 
 <div class="row">
     <!-- Items Card -->
-    <div class="col-md-6">
+    <div class="col-md-6" style="width:30vw">
         <div class="card card-primary card-outline mb-4">
             <div class="card-header">
                 <div class="card-title">Items</div>
@@ -70,7 +70,7 @@
     </div>
 
     <!-- Lost Items Card -->
-    <div class="col-md-6">
+    <div class="col-md-6" style="width:50vw">
         <div class="card card-warning card-outline mb-4">
             <div class="card-header">
                 <div class="card-title">Lost Items</div>
@@ -88,6 +88,7 @@
                                 <th>Item Name</th>
                                 <th>Student Added</th>
                                 <th>Date Lost</th>
+                                <th>Taken</th>
                                 <th>Place Lost</th>
                                 <th>Actions</th>
                             </tr>
@@ -106,6 +107,11 @@
             <td><span>Manager Added</span></td>
         @endif
         <td>{{ $lost->date_lost }}</td>
+        @if($lost->taken ==1)
+        <td class="badge bg-success">{{ $lost->date_taken }}</td>
+        @else
+            <td><form action={{ route('take', $lost->id) }} method="POST">@csrf<button type="submit" class="badge bg-warning text-black">Not yet Taken</button></form></td>
+        @endif
         <td>{{ $lost->place_lost }}</td>
         <td>
             <a href="{{ route('lfm.lostitems.edit', $lost->id) }}" class="btn btn-sm btn-warning">
