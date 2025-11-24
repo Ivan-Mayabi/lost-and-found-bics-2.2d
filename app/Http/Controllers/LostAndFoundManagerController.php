@@ -91,6 +91,7 @@ class LostAndFoundManagerController extends Controller
     {
         $claim = ItemClaimed::findOrFail($id);
         $claim->verified=1;
+        $claim->save();
         return redirect()->back()->with('success','Claim approved');
     }
 
