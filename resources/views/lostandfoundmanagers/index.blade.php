@@ -86,6 +86,7 @@
                                 <th>ID</th>
                                 <th>Item Image</th>
                                 <th>Item Name</th>
+                                <th>Student Added</th>
                                 <th>Date Lost</th>
                                 <th>Place Lost</th>
                                 <th>Actions</th>
@@ -93,12 +94,17 @@
                         </thead>
                         <tbody>
     @foreach($lostItems as $lost)
-    <tr style={{ $lost->student_added == 1 ? "bacground-color:#c84b61" : ""  }}>
+    <tr>
         <td>{{ $lost->id }}</td>
         <td class="w-25">
             <img class="w-50" src="{{ preg_match('/^https:\/\/via\.placeholder\.com\/640x480\.png\/?/',$lost->image_url) == 1 ? asset('favicon.png')  :  asset('storage/'.$lost->image_url) }}" alt="Lost Image" width="100vh">
         </td>
         <td>{{ $lost->item->name ?? 'N/A' }}</td>
+        @if($lost->student_added == 1)
+            <td><span class="badge bg-warning text-black">Student Added</span></td>
+        @else
+            <td><span>Manager Added</span></td>
+        @endif
         <td>{{ $lost->date_lost }}</td>
         <td>{{ $lost->place_lost }}</td>
         <td>
