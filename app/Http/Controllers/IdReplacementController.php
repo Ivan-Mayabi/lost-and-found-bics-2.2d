@@ -34,7 +34,7 @@ class IdReplacementController extends Controller
     public function indexView()
     {
         if (Auth::user()->isAdmin()) {
-            $idReplacements = IdReplacement::paginate(env('DEFAULT_PAGINATE_NUMBER',10));
+            $idReplacements = IdReplacement::paginate(env('DEFAULT_PAGINATE_NUMBER', 10));
         } else {
             $idReplacements = IdReplacement::where('user_id', Auth::id())->latest()->get();
         }
@@ -58,7 +58,6 @@ class IdReplacementController extends Controller
         }
 
         if ($request instanceof StoreIdReplacementRequest) {
-
             $this->authorize('create', IdReplacement::class);
 
             $payment = Payment::findOrFail($request->payment_id);
@@ -73,7 +72,7 @@ class IdReplacementController extends Controller
                 'user_id' => Auth::id(),
                 'payment_id' => $payment->id,
                 'id_lost' => $request->id_lost,
-                'approved' => false,
+                'approved' => 2, // pending by default
             ]);
 
             return response()->json([
@@ -92,7 +91,7 @@ class IdReplacementController extends Controller
                 'user_id' => Auth::id(),
                 'id_lost' => $request->id_lost,
                 'payment_id' => $request->payment_id,
-                'approved' => false,
+                'approved' => 2, // pending by default
             ]);
 
             return redirect()->route('user.temporary-ids.index')
@@ -149,63 +148,63 @@ class IdReplacementController extends Controller
         ]);
     }
 
+    public function approve(Request $request, IdReplacement $idReplacement): JsonResponse|\Illuminate\Http\RedirectResponse
+{
+    $this->authorize('update', $idReplacement);
 
-    /**
-     * APPROVE
-     */
-    public function approve(Request $request, IdReplacement $idReplacement)
-    {
-        $this->authorize('update', $idReplacement);
+    // Load the payment relation
+    $idReplacement->load('payment');
 
-        if ($idReplacement->approved == 1) {
-
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'message' => 'ID replacement request is already approved'
-                ], Response::HTTP_BAD_REQUEST);
-            }
-
-            return redirect()->back()->with('error', 'This request is already approved.');
-        }
-
-        // Only update the existing column
-        $idReplacement->update([
-            'approved' => 1,
-        ]);
-
+    // Check if payment exists and is verified (verified = 1)
+    if (!$idReplacement->payment || $idReplacement->payment->verified !== 1) {
+        $msg = 'Cannot approve this request because payment has not been verified.';
         if ($request->wantsJson()) {
-            return response()->json([
-                'message' => 'ID replacement request approved successfully',
-                'data' => $idReplacement->load(['user', 'payment'])
-            ]);
+            return response()->json(['message' => $msg], Response::HTTP_BAD_REQUEST);
         }
-
-        return redirect()->back()->with('success', 'ID replacement request approved successfully.');
+        return redirect()->back()->with('error', $msg);
     }
 
+    // Check if already approved
+    if ($idReplacement->approved === 1) {
+        $msg = 'This request is already approved.';
+        if ($request->wantsJson()) {
+            return response()->json(['message' => $msg], Response::HTTP_BAD_REQUEST);
+        }
+        return redirect()->back()->with('error', $msg);
+    }
 
-    /**
-     * REJECT
-     * (We only flip approved → 0 because no reject columns exist)
-     */
-    public function reject(Request $request, IdReplacement $idReplacement)
+    // Approve the request
+    $idReplacement->update([
+        'approved' => 1, // pending = 2, approved = 1
+    ]);
+
+    $msg = 'ID replacement request approved successfully.';
+    if ($request->wantsJson()) {
+        return response()->json([
+            'message' => $msg,
+            'data' => $idReplacement->load(['user', 'payment'])
+        ]);
+    }
+
+    return redirect()->back()->with('success', $msg);
+}
+
+
+    public function reject(Request $request, IdReplacement $idReplacement): JsonResponse|\Illuminate\Http\RedirectResponse
     {
         $this->authorize('update', $idReplacement);
 
-        if ($idReplacement->approved == 1) {
-
+        if ($idReplacement->isApproved()) {
             if ($request->wantsJson()) {
                 return response()->json([
                     'message' => 'Cannot reject an approved ID replacement request'
                 ], Response::HTTP_BAD_REQUEST);
             }
-
             return redirect()->back()->with('error', 'You cannot reject an already approved request.');
         }
 
-        // Set approved = 0 (unverified)
         $idReplacement->update([
-            'approved' => 0,
+            'approved' => 0, // rejected
         ]);
 
         if ($request->wantsJson()) {
